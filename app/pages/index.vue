@@ -9,7 +9,7 @@
         <div class="space-x-6">
           <a href="#features" class="text-gray-300 hover:text-white transition">Fitur</a>
           <a href="#about" class="text-gray-300 hover:text-white transition">Tentang</a>
-          <NuxtLink to="/dashboard"
+          <NuxtLink to="/auth/login"
             class="inline-flex items-center bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition">
             Mulai
           </NuxtLink>
