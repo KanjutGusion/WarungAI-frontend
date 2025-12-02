@@ -43,7 +43,7 @@
           <p class="text-gray-400">
             Belum punya akun?
             <NuxtLink to="/" class="text-purple-400 hover:text-purple-300">
-              Kembali ke beranda
+              daftar
             </NuxtLink>
           </p>
         </div>
