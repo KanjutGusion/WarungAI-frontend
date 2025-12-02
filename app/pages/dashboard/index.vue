@@ -1,103 +1,61 @@
 <template>
-  <div class="min-h-screen bg-slate-900 p-6">
-    <div class="max-w-6xl mx-auto">
-      <!-- Header -->
-      <div class="mb-8">
-        <h1 class="text-3xl font-bold text-white">Dashboard</h1>
-        <p class="text-gray-400 mt-2">Selamat datang di WarungAI</p>
-      </div>
+ <div class="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex">
+    <!-- SIDEBAR -->
+    <DashboardSidebar />
 
-      <!-- Stats Cards -->
-      <div class="grid md:grid-cols-4 gap-6 mb-8">
-        <div 
-          v-for="stat in stats" 
-          :key="stat.label"
-          class="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center"
-        >
-          <div class="text-3xl mb-2">{{ stat.icon }}</div>
-          <div class="text-2xl font-bold text-white">{{ stat.value }}</div>
-          <div class="text-gray-400 text-sm">{{ stat.label }}</div>
-        </div>
-      </div>
+    <!--  konten -->
+    <main class="flex-1 px-4 py-6 sm:px-6 lg:px-10">
+      <div class="w-full  space-y-10">
 
-      <!-- Content -->
-      <div class="grid md:grid-cols-2 gap-6">
-        <!-- Recent Sales -->
-        <div class="bg-slate-800 border border-white/10 rounded-xl overflow-hidden">
-          <div class="px-6 py-4 border-b border-white/10">
-            <h2 class="text-xl font-semibold text-white">Penjualan Terbaru</h2>
+        <!-- Header -->
+        <header class="flex items-center justify-between">
+          <div>
+            <h1 class="text-4xl font-extrabold text-white tracking-tight">
+              Dashboard
+            </h1>
+            <p class="text-gray-400 mt-1 text-base">
+              Selamat datang, ini ringkasan warungmu hari ini.
+            </p>
           </div>
-          <div class="p-6 space-y-4">
-            <div 
-              v-for="sale in recentSales" 
-              :key="sale.id"
-              class="flex justify-between items-center py-2 border-b border-white/10 last:border-0"
-            >
-              <div>
-                <p class="text-white">{{ sale.product }}</p>
-                <p class="text-gray-400 text-sm">{{ sale.time }}</p>
-              </div>
-              <span class="text-green-400 font-semibold">{{ formatRupiah(sale.amount) }}</span>
-            </div>
-          </div>
-        </div>
 
-        <!-- Quick Actions -->
-        <div class="bg-slate-800 border border-white/10 rounded-xl overflow-hidden">
-          <div class="px-6 py-4 border-b border-white/10">
-            <h2 class="text-xl font-semibold text-white">Aksi Cepat</h2>
-          </div>
-          <div class="p-6 grid grid-cols-2 gap-4">
-            <button class="border-2 border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-white rounded-lg py-6 flex flex-col items-center transition">
-              <span class="text-2xl mb-2">➕</span>
-              Tambah Produk
-            </button>
-            <button class="border-2 border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-white rounded-lg py-6 flex flex-col items-center transition">
-              <span class="text-2xl mb-2">📦</span>
-              Stok Barang
-            </button>
-            <button class="border-2 border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-white rounded-lg py-6 flex flex-col items-center transition">
-              <span class="text-2xl mb-2">📊</span>
-              Laporan
-            </button>
-            <button class="border-2 border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-white rounded-lg py-6 flex flex-col items-center transition">
-              <span class="text-2xl mb-2">⚙️</span>
-              Pengaturan
-            </button>
-          </div>
-        </div>
-      </div>
+          <span
+            class="text-sm font-medium text-slate-300 border border-slate-700 px-3 py-1 rounded-full bg-slate-800/50">
+            {{ todayLabel }}
+          </span>
+        </header>
 
-      <!-- Back to Home -->
-      <div class="mt-8 text-center">
-        <NuxtLink to="/" class="text-purple-400 hover:text-purple-300">
-          ← Kembali ke Beranda
-        </NuxtLink>
+        <!-- Stat cards -->
+        <section class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+          <StatCard v-for="stat in computedStats" :key="stat.label" :icon="stat.icon" :value="stat.value"
+            :label="stat.label" :trend="stat.trend" />
+        </section>
+
+        <!-- Konten utama -->
+        <section class="grid gap-8 xl:grid-cols-[2fr]">
+          <div class="space-y-6">
+            <OcrUploadPanel :ocr-rows="ocrRows" :format-rupiah="formatRupiah" @ocr-parsed="updateOcrData" />
+          </div>
+
+        </section>
       </div>
-    </div>
+    </main>
   </div>
 </template>
 
-<script setup>
-const stats = [
-  { icon: '💰', value: 'Rp 2.5jt', label: 'Pendapatan Hari Ini' },
-  { icon: '🛒', value: '45', label: 'Transaksi' },
-  { icon: '📦', value: '128', label: 'Produk' },
-  { icon: '👥', value: '32', label: 'Pelanggan' },
-]
+<script setup lang="ts">
+import StatCard from '~/components/layout/StatCard.vue'
+import DashboardSidebar from '~/components/layout/Sidebar.vue'
+import OcrUploadPanel from '~/pages/dashboard/UploadOcr.vue'
+import { useDashboardOverview } from '~/composables/useDashboard' 
 
-const recentSales = [
-  { id: 1, product: 'Nasi Goreng Spesial', amount: 25000, time: '10 menit lalu' },
-  { id: 2, product: 'Es Teh Manis', amount: 5000, time: '15 menit lalu' },
-  { id: 3, product: 'Mie Ayam Bakso', amount: 20000, time: '30 menit lalu' },
-  { id: 4, product: 'Kopi Susu', amount: 12000, time: '1 jam lalu' },
-]
 
-const formatRupiah = (amount) => {
-  return new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    minimumFractionDigits: 0,
-  }).format(amount)
-}
+const {
+  stats,
+  ocrRows,
+  omzetToday,
+  computedStats,
+  todayLabel,
+  formatRupiah,
+  updateOcrData,
+} = useDashboardOverview()
 </script>

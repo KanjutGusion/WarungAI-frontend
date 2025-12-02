@@ -9,9 +9,11 @@
         <div class="space-x-6">
           <a href="#features" class="text-gray-300 hover:text-white transition">Fitur</a>
           <a href="#about" class="text-gray-300 hover:text-white transition">Tentang</a>
-          <button class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition">
+          <NuxtLink to="/dashboard"
+            class="inline-flex items-center bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition">
             Mulai
-          </button>
+          </NuxtLink>
+
         </div>
       </div>
     </nav>
@@ -29,10 +31,12 @@
           Platform AI untuk membantu usaha warung Anda menjadi lebih cerdas dan efisien
         </p>
         <div class="flex gap-4 justify-center">
-          <button class="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg font-semibold transition transform hover:scale-105">
+          <button
+            class="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg font-semibold transition transform hover:scale-105">
             Coba Gratis
           </button>
-          <button class="border border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-white px-8 py-3 rounded-lg font-semibold transition">
+          <button
+            class="border border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-white px-8 py-3 rounded-lg font-semibold transition">
             Pelajari Lebih
           </button>
         </div>
@@ -52,7 +56,7 @@
           <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 hover:bg-white/20 transition">
             <div class="text-4xl mb-4">🤖</div>
             <h3 class="text-xl font-semibold text-white mb-2">AI Assistant</h3>
-            <p class="text-gray-400">Asisten cerdas yang membantu mengelola stok dan pesanan</p>
+            <p class="text-gray-400">Asisten Cerdas Naikkan Omzet dan Tentukan Harga Optimal</p>
           </div>
           <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 hover:bg-white/20 transition">
             <div class="text-4xl mb-4">💰</div>
@@ -68,8 +72,8 @@
       <div class="max-w-4xl mx-auto text-center">
         <h2 class="text-3xl font-bold text-white mb-6">Tentang WarungAI</h2>
         <p class="text-gray-300 text-lg leading-relaxed">
-          WarungAI adalah solusi digital untuk UMKM Indonesia. Kami percaya bahwa teknologi 
-          AI dapat membantu warung dan usaha kecil berkembang lebih pesat dengan tools yang 
+          WarungAI adalah solusi digital untuk UMKM Indonesia. Kami percaya bahwa teknologi
+          AI dapat membantu warung dan usaha kecil berkembang lebih pesat dengan tools yang
           mudah digunakan dan terjangkau.
         </p>
       </div>
@@ -92,4 +96,3 @@ useHead({
   ]
 })
 </script>
-
