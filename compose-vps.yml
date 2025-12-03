@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  warungai-frontend:
+    image: ghcr.io/kanjutgusion/warungai-backend:{{VERSION}}
+    container_name: warungai-frontend
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=production
+      - NUXT_HOST=0.0.0.0
+      - NUXT_PORT=3000
+    restart: unless-stopped
