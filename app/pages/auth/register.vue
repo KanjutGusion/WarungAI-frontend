@@ -6,13 +6,28 @@
       <div class="bg-slate-800 border border-white/10 rounded-xl p-8">
         <div class="text-center mb-8">
           <h1 class="text-3xl font-bold text-white mb-2">🍜 WarungAI</h1>
-          <p class="text-gray-400">Masuk ke akun Anda</p>
+          <p class="text-gray-400">Buat akun baru</p>
           <p v-if="errors.api" class="text-sm text-red-400">
             {{ errors.api }}
           </p>
         </div>
 
-        <form @submit.prevent="handleLogin" class="space-y-6">
+        <form @submit.prevent="handleRegister" class="space-y-6">
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-300"
+              >Username</label
+            >
+            <input
+              v-model="form.username"
+              type="text"
+              placeholder="Nama lengkap"
+              class="w-full px-4 py-3 bg-slate-700 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+            <p v-if="errors.username" class="text-sm text-red-400">
+              {{ errors.username }}
+            </p>
+          </div>
+
           <div class="space-y-2">
             <label class="block text-sm font-medium text-gray-300">Email</label>
             <input
@@ -25,7 +40,20 @@
               {{ errors.email }}
             </p>
           </div>
-
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-300"
+              >Phone number</label
+            >
+            <input
+              v-model="form.phone"
+              type="text"
+              placeholder="0812345678"
+              class="w-full px-4 py-3 bg-slate-700 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+            <p v-if="errors.phone" class="text-sm text-red-400">
+              {{ errors.phone }}
+            </p>
+          </div>
           <div class="space-y-2">
             <label class="block text-sm font-medium text-gray-300"
               >Password</label
@@ -46,18 +74,18 @@
             class="w-full bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold transition"
             :disabled="isLoading"
           >
-            {{ isLoading ? "Memuat..." : "Masuk" }}
+            {{ isLoading ? "Memuat..." : "Daftar" }}
           </button>
         </form>
 
         <div class="mt-6 text-center">
           <p class="text-gray-400">
-            Belum punya akun?
+            Sudah punya akun?
             <NuxtLink
-              to="/auth/register"
+              to="/auth/login"
               class="text-purple-400 hover:text-purple-300"
             >
-              daftar
+              masuk
             </NuxtLink>
           </p>
         </div>
@@ -68,22 +96,33 @@
 
 <script setup>
 const form = reactive({
+  username: "",
   email: "",
   password: "",
+  phone: "",
 });
 
 const errors = reactive({
+  username: "",
   email: "",
   password: "",
+  phone: "",
 });
 
 const isLoading = ref(false);
 
-const handleLogin = async () => {
+const handleRegister = async () => {
+  errors.username = "";
   errors.email = "";
-  errors.password = "";
   errors.api = "";
-  const { login } = useAuth();
+  errors.password = "";
+  errors.phone = "";
+  const { register } = useAuth();
+  if (!form.username) {
+    errors.username = "Nama harus diisi";
+    return;
+  }
+
   if (!form.email) {
     errors.email = "Email harus diisi";
     return;
@@ -93,9 +132,19 @@ const handleLogin = async () => {
     errors.password = "Password harus diisi";
     return;
   }
+  const phoneRegex = /^(\+62|62|0)8[1-9][0-9]{7,11}$/;
+  if (form.phone && !phoneRegex.test(form.phone)) {
+    errors.phone = "Nomor HP tidak valid";
+    return;
+  }
 
   isLoading.value = true;
-  const res = await login(form.email, form.password);
+  const res = await register(
+    form.username,
+    form.password,
+    form.email,
+    form.phone
+  );
 
   isLoading.value = false;
   if (res.success) {

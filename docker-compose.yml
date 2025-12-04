@@ -13,7 +13,11 @@ services:
       - NODE_ENV=production
       - NUXT_HOST=0.0.0.0
       - NUXT_PORT=3000
+      - NUXT_PUBLIC_API_BASE=http://localhost:3001
+      - NUXT_PUBLIC_API_VERSION=v1
     restart: unless-stopped
+    profiles:
+      - prod
     networks:
       - warungai-network
 
@@ -35,6 +39,8 @@ services:
       - NODE_ENV=development
       - NUXT_HOST=0.0.0.0
       - NUXT_PORT=3000
+      - NUXT_PUBLIC_API_BASE=http://localhost:3001
+      - NUXT_PUBLIC_API_VERSION=v1
     profiles:
       - dev
     networks:

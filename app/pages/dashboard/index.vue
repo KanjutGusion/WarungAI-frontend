@@ -14,7 +14,7 @@
               Dashboard
             </h1>
             <p class="text-gray-400 mt-1 text-base">
-              Selamat datang, ini ringkasan warungmu hari ini.
+              Selamat datang,{{user?.username}} ini ringkasan warungmu hari ini.
             </p>
           </div>
 
@@ -48,6 +48,9 @@ import DashboardSidebar from '~/components/layout/Sidebar.vue'
 import OcrUploadPanel from '~/pages/dashboard/UploadOcr.vue'
 import { useDashboardOverview } from '~/composables/useDashboard' 
 
+import { useAuth } from '@/composables/useAuth'
+
+const { user,checkAuth } = useAuth()
 
 const {
   stats,

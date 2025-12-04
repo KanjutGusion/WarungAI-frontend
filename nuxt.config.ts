@@ -22,7 +22,7 @@ export default defineNuxtConfig({
       // API
       apiBase: process.env.API_BASE_URL || 'http://localhost:8000/api',
       apiTimeout: parseInt(process.env.API_TIMEOUT || '30000'),
-      
+      apiVersion: process.env.API_VERSION || "v1",
       // App
       appName: process.env.NUXT_PUBLIC_APP_NAME || 'WarungAI',
       appDescription: process.env.NUXT_PUBLIC_APP_DESCRIPTION || 'Platform AI untuk UMKM Indonesia',
