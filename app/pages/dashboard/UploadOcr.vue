@@ -1,54 +1,115 @@
 <template>
-  <div class="grid lg:grid-cols-3 gap-6">
-    <div class="lg:col-span-2 bg-slate-800 border border-slate-700 rounded-xl overflow-hidden">
-      <div class="px-6 py-4 border-b border-slate-700 flex items-center justify-between">
-        <!--Upload nota-->
+  <!--  kolom -->
+  <div class="grid grid-cols-1 lg:grid-cols-[2fr,1.2fr] gap-6 items-stretch">
+    <!-- Upload Nota -->
+    <div
+      class="lg:col-span-1 bg-slate-900/80 border border-slate-800/80
+             rounded-2xl overflow-hidden shadow-[0_18px_40px_rgba(15,23,42,0.8)]
+             flex flex-col min-w-0"
+    >
+      <!-- Header -->
+      <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between">
         <div>
-          <h2 class="text-lg font-semibold text-white">Upload Nota</h2>
+          <h2 class="text-lg font-semibold text-slate-50">
+            Upload Nota
+          </h2>
           <p class="text-xs text-slate-400 mt-1">
-            Upload foto nota untuk hitung omzet & parsing OCR.
+            Upload foto nota untuk hitung omzet &amp; parsing OCR.
           </p>
         </div>
       </div>
 
-      <div class="p-6 grid md:grid-cols-[1.2fr,1.5fr] gap-6 items-start">
+      <!-- Body -->
+      <div class="p-6 grid md:grid-cols-[1.2fr,1.5fr] gap-6 items-start flex-1">
+        <!-- Form kiri -->
         <div class="space-y-4">
-          <input ref="fileInput" type="file" accept="image/*" class="hidden" @change="onFileChange" />
+          <input
+            ref="fileInput"
+            type="file"
+            accept="image/*"
+            class="hidden"
+            @change="onFileChange"
+          />
 
-          <div class="text-xs text-slate-400 border border-dashed border-slate-600 rounded-lg px-3 py-2">
-            <p class="font-medium text-slate-200 mb-1">Status file</p>
-            <p v-if="fileName">
-              📄 <span class="text-slate-100">{{ fileName }}</span>
+          <!-- Status file -->
+          <div
+            class="text-xs text-slate-400 border border-dashed border-slate-700
+                   rounded-xl px-4 py-3 bg-slate-900/70"
+          >
+            <p class="font-semibold text-slate-100 mb-1">
+              Status file
             </p>
-            <p v-else class="italic">Belum ada file yang dipilih.</p>
-            <p class="mt-1">
-              Format yang didukung: <span class="text-slate-200">JPG, PNG</span>
+
+            <p v-if="fileName" class="flex items-center gap-1">
+              📄 <span class="text-slate-50 font-medium truncate">{{ fileName }}</span>
+            </p>
+            <p v-else class="italic">
+              Belum ada file yang dipilih.
+            </p>
+
+            <p class="mt-2">
+              Format yang didukung:
+              <span class="text-slate-100 font-medium">JPG, PNG</span>
             </p>
           </div>
 
-          <button type="button" @click="selectFile"
-            class="w-full bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium px-4 py-3 rounded-lg transition flex items-center justify-center space-x-2 disabled:opacity-50"
-            :disabled="isUploading">
+          <!-- Error -->
+          <p
+            v-if="uploadError"
+            class="text-xs text-red-400 bg-red-950/40 border border-red-500/40
+                   rounded-lg px-3 py-2"
+          >
+            {{ uploadError }}
+          </p>
+
+          <!-- Tombol pilih -->
+          <button
+            type="button"
+            @click="selectFile"
+            class="w-full bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium
+                   px-4 py-3 rounded-lg transition flex items-center justify-center gap-2
+                   disabled:opacity-50 disabled:cursor-not-allowed"
+            :disabled="isUploading"
+          >
             <span v-if="!isUploading">Pilih Nota</span>
-            <span v-else>Sedang mengupload...</span>
+            <span v-else class="flex items-center gap-2">
+              <span class="animate-pulse">• • •</span>
+              Sedang mengupload...
+            </span>
           </button>
 
-
-          <button type="button"
-            class="w-full border border-slate-600 text-slate-200 hover:bg-slate-700 text-xs font-medium px-4 py-2 rounded-lg transition disabled:opacity-50"
-            :disabled="!selectedFile || isUploading" @click="handleProcess">
+          <!-- Tombol proses -->
+          <button
+            type="button"
+            class="w-full border border-slate-700 text-slate-100 hover:bg-slate-800
+                   text-xs font-medium px-4 py-2.5 rounded-lg transition
+                   disabled:opacity-40 disabled:cursor-not-allowed"
+            :disabled="!selectedFile || isUploading"
+            @click="handleProcess"
+          >
             Upload &amp; Proses
           </button>
         </div>
-        <!--Preview Nota-->
-        <div>
-          <p class="text-xs font-medium text-slate-300 mb-2">
+
+        <!-- Preview Nota -->
+        <div class="space-y-2">
+          <p class="text-xs font-medium text-slate-300">
             Preview Nota
           </p>
           <div
-            class="aspect-[4/3] w-full rounded-xl border border-slate-700 bg-slate-900 flex items-center justify-center overflow-hidden">
-            <img v-if="previewUrl" :src="previewUrl" alt="Preview nota" class="w-full h-full object-contain" />
-            <div v-else class="flex flex-col items-center justify-center text-slate-500 text-xs px-6 text-center">
+            class="aspect-[4/3] w-full rounded-xl border border-slate-800
+                   bg-slate-950 flex items-center justify-center overflow-hidden"
+          >
+            <img
+              v-if="previewUrl"
+              :src="previewUrl"
+              alt="Preview nota"
+              class="w-full h-full object-contain"
+            />
+            <div
+              v-else
+              class="flex flex-col items-center justify-center text-slate-500 text-xs px-6 text-center"
+            >
               <span class="text-3xl mb-2">🧾</span>
               Pilih file nota untuk melihat preview di sini.
             </div>
@@ -56,33 +117,42 @@
         </div>
       </div>
     </div>
-    <!--Hasil OCR Parsing-->
-    <div class="bg-slate-800 border border-slate-700 rounded-xl overflow-hidden">
-      <div class="px-6 py-4 border-b border-slate-700">
-        <h2 class="text-lg font-semibold text-white">
+
+    <!--  Hasil OCR Parsing -->
+    <div
+      class="bg-slate-900/80 border border-slate-800/80 rounded-2xl overflow-hidden
+             shadow-[0_18px_40px_rgba(15,23,42,0.7)] flex flex-col min-w-0"
+    >
+      <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between">
+        <h2 class="text-lg font-semibold text-slate-50">
           Hasil OCR Parsing
         </h2>
       </div>
-      <div class="p-4 space-y-3 max-h-[320px] overflow-y-auto">
-        <div v-if="!ocrRows.length" class="text-xs text-slate-400 italic">
+
+      <div class="p-4 space-y-3 flex-1 min-h-[260px]">
+        <div
+          v-if="!ocrRows.length"
+          class="h-full flex items-center justify-center text-xs text-slate-400 italic text-center px-4"
+        >
           Belum ada data OCR. Upload &amp; proses nota terlebih dahulu.
         </div>
 
-        <div v-else class="overflow-x-auto">
-          <table class="max-w-full text-slate-200">
-
-
-
-            <thead>
-              <tr class="text-left border-b border-slate-700">
-                <th class="py-2 pr-4">Produk</th>
-                <th class="py-2 pr-4">Qty</th>
-                <th class="py-2 pr-4">Harga</th>
-                <th class="py-2 pr-4 text-right">Subtotal</th>
+        <div v-else class="overflow-x-auto max-h-[320px]">
+          <table class="min-w-full text-xs text-slate-100">
+            <thead class="bg-slate-900/90 sticky top-0">
+              <tr class="text-left border-b border-slate-800">
+                <th class="py-2 pr-4 font-semibold">Produk</th>
+                <th class="py-2 pr-4 font-semibold">Qty</th>
+                <th class="py-2 pr-4 font-semibold">Harga</th>
+                <th class="py-2 pr-4 text-right font-semibold">Subtotal</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="row in ocrRows" :key="row.id" class="border-b border-slate-800 last:border-0">
+              <tr
+                v-for="row in ocrRows"
+                :key="row.id"
+                class="border-b border-slate-800/80 last:border-0"
+              >
                 <td class="py-2 pr-4">{{ row.product }}</td>
                 <td class="py-2 pr-4">{{ row.qty }}</td>
                 <td class="py-2 pr-4">{{ formatRupiah(row.price) }}</td>
