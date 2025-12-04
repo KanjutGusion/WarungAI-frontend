@@ -1,5 +1,5 @@
 <template>
-  <footer class="bg-slate-900 border-t border-white/10">
+  <footer id="Footer" class="bg-slate-900 border-t border-white/10">
     <div class="max-w-6xl mx-auto px-6 py-12">
       <div class="grid md:grid-cols-4 gap-8">
         <!-- Brand -->
@@ -24,15 +24,15 @@
         <div>
           <h4 class="text-white font-semibold mb-4">Kontak</h4>
           <ul class="space-y-2 text-gray-400">
-            <li>📧 hello@warungai.com</li>
-            <li>📱 +62 812 3456 7890</li>
+            <li>📧 kanjutgusion@tim.com</li>
+            <li>📱 +62 000 000 000</li>
           </ul>
         </div>
       </div>
 
       <!-- Copyright -->
       <div class="mt-12 pt-8 border-t border-white/10 text-center text-gray-400">
-        <p>© {{ currentYear }} WarungAI. Dibuat dengan ❤️ di Indonesia</p>
+        <p>© {{ currentYear }} WarungAI dibuat dengan ❤️ menggunakan Nuxt.js</p>
       </div>
     </div>
   </footer>

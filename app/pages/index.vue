@@ -1,98 +1,122 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-    <!-- Navigation -->
-    <nav class="px-6 py-4">
-      <div class="max-w-6xl mx-auto flex justify-between items-center">
-        <div class="text-2xl font-bold text-white">
-          🍜 WarungAI
-        </div>
-        <div class="space-x-6">
-          <a href="#features" class="text-gray-300 hover:text-white transition">Fitur</a>
-          <a href="#about" class="text-gray-300 hover:text-white transition">Tentang</a>
-          <NuxtLink to="/auth/login"
-            class="inline-flex items-center bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition">
-            Mulai
-          </NuxtLink>
+  <div class="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+    <!-- HEADER / NAV -->
+    <LandingHeader />
+    <SectionShell>
+      <div class="grid md:grid-cols-2 gap-19 items-center">
+        <div class="text-center md:text-left space-y-6 lg:space-y-7
+            pt-6 md:pt-10">
 
-        </div>
-      </div>
-    </nav>
+          <p class="inline-block text-xs font-semibold uppercase tracking-wide text-gray-300
+                   bg-white/10 px-3 py-1 rounded-full">
+            Platform AI untuk Warung &amp; UMKM
+          </p>
+          <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-snug">
+            Selamat Datang di
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+              WarungAI
+            </span>
+          </h1>
+          <p class="text-base md:text-lg text-gray-300 max-w-xl mx-auto md:mx-0">
+            Kelola nota, pantau omzet, dan dapatkan rekomendasi harga dengan bantuan AI — praktis dan tanpa ribet,
+            langsung dari layanan cerdas GRATIS
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+            <NuxtLink to="/auth/login">
+              <BaseButton size="lg">
+                Coba Gratis
+              </BaseButton>
+            </NuxtLink>
 
-    <!-- Hero Section -->
-    <section class="px-6 py-20">
-      <div class="max-w-4xl mx-auto text-center">
-        <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">
-          Selamat Datang di
-          <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
-            WarungAI
-          </span>
-        </h1>
-        <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-          Platform AI untuk membantu usaha warung Anda menjadi lebih cerdas dan efisien
-        </p>
-        <div class="flex gap-4 justify-center">
-          <button
-            class="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg font-semibold transition transform hover:scale-105">
-            Coba Gratis
-          </button>
-          <button
-            class="border border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-white px-8 py-3 rounded-lg font-semibold transition">
-            Pelajari Lebih
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Features Section -->
-    <section id="features" class="px-6 py-20">
-      <div class="max-w-6xl mx-auto">
-        <h2 class="text-3xl font-bold text-white text-center mb-12">Fitur Unggulan</h2>
-        <div class="grid md:grid-cols-3 gap-8">
-          <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 hover:bg-white/20 transition">
-            <div class="text-4xl mb-4">📊</div>
-            <h3 class="text-xl font-semibold text-white mb-2">Analisis Penjualan</h3>
-            <p class="text-gray-400">Pantau penjualan harian dengan dashboard yang mudah dipahami</p>
+            <NuxtLink to="#Footer">
+              <BaseButton size="lg" variant="outline">
+                Lihat Selengkapnya
+              </BaseButton>
+            </NuxtLink>
           </div>
-          <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 hover:bg-white/20 transition">
-            <div class="text-4xl mb-4">🤖</div>
-            <h3 class="text-xl font-semibold text-white mb-2">AI Assistant</h3>
-            <p class="text-gray-400">Asisten Cerdas Naikkan Omzet dan Tentukan Harga Optimal</p>
-          </div>
-          <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 hover:bg-white/20 transition">
-            <div class="text-4xl mb-4">💰</div>
-            <h3 class="text-xl font-semibold text-white mb-2">Laporan Keuangan</h3>
-            <p class="text-gray-400">Catat pemasukan dan pengeluaran secara otomatis</p>
-          </div>
+          <p class="text-sm text-gray-400">
+            Mudah digunakan • Cocok untuk warung, kios, dan toko kelontong
+          </p>
         </div>
-      </div>
-    </section>
 
-    <!-- About Section -->
-    <section id="about" class="px-6 py-20">
-      <div class="max-w-4xl mx-auto text-center">
-        <h2 class="text-3xl font-bold text-white mb-6">Tentang WarungAI</h2>
-        <p class="text-gray-300 text-lg leading-relaxed">
-          WarungAI adalah solusi digital untuk UMKM Indonesia. Kami percaya bahwa teknologi
-          AI dapat membantu warung dan usaha kecil berkembang lebih pesat dengan tools yang
-          mudah digunakan dan terjangkau.
-        </p>
-      </div>
-    </section>
+        <!-- PREVIEW DASHBOARD -->
+        <div class="hidden md:flex justify-end">
+          <HeroPreview />
+        </div>
 
-    <!-- Footer -->
-    <footer class="px-6 py-8 border-t border-white/10">
-      <div class="max-w-6xl mx-auto text-center text-gray-400">
-        <p>© 2024 WarungAI. Dibuat dengan ❤️ menggunakan Nuxt.js</p>
       </div>
-    </footer>
+    </SectionShell>
+
+    <!-- FEATUR -->
+    <SectionShell id="features">
+      <SectionTitle>
+        <template #title>Fitur Unggulan</template>
+        <template #subtitle>
+          Semua yang Anda butuhkan untuk mengelola usaha kecil, dari nota sampai laporan keuangan,
+          dalam satu dashboard.
+        </template>
+      </SectionTitle>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <FeatureCard>
+          <template #icon>📊</template>
+          <template #title>Analisis Penjualan</template>
+          <template #description>
+            Pantau penjualan harian, produk terlaris, dan tren omzet setiap hari.
+          </template>
+        </FeatureCard>
+
+        <FeatureCard>
+          <template #icon>🤖</template>
+          <template #title>AI Assistant</template>
+          <template #description>
+            Dapatkan rekomendasi harga optimal dan saran untuk meningkatkan keuntungan.
+          </template>
+        </FeatureCard>
+
+        <FeatureCard>
+          <template #icon>💰</template>
+          <template #title>Laporan Keuangan</template>
+          <template #description>
+            Catat pemasukan dan pengeluaran secara otomatis dari nota yang diunggah.
+          </template>
+        </FeatureCard>
+      </div>
+    </SectionShell>
+
+    <!-- ABOUT -->
+    <SectionShell id="about">
+      <SectionTitle>
+        <template #title>Tentang WarungAI</template>
+        <template #subtitle>
+          WarungAI adalah solusi digital yang dirancang khusus untuk UMKM Indonesia. Kami membantu
+          warung mengelola keuangan dan penjualan dengan teknologi AI yang mudah digunakan.
+        </template>
+      </SectionTitle>
+    </SectionShell>
+
+    <!-- FOOTER -->
+    <LandingFooter />
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import LandingHeader from '~/components/layout/Header.vue'
+import LandingFooter from '~/components/layout/Footer.vue'
+import HeroPreview from '~/components/ui/Preview.vue'
+import SectionShell from '~/components/ui/SectionShell.vue'
+import SectionTitle from '~/components/ui/SectionTitle.vue'
+import FeatureCard from '~/components/ui/FeatureCard.vue'
+import BaseButton from '~/components/ui/BaseButton.vue'
+
 useHead({
   title: 'WarungAI - Platform AI untuk Warung Anda',
   meta: [
-    { name: 'description', content: 'Platform AI untuk membantu usaha warung Anda menjadi lebih cerdas dan efisien' }
-  ]
+    {
+      name: 'description',
+      content:
+        'Platform AI untuk membantu usaha warung Anda menjadi lebih cerdas dan efisien',
+    },
+  ],
 })
 </script>

@@ -7,7 +7,7 @@
           🍜 WarungAI
         </NuxtLink>
 
-        <!-- Navigation -->
+        <!-- Navigation  -->
         <div class="hidden md:flex items-center space-x-6">
           <NuxtLink 
             v-for="link in navLinks" 
@@ -17,12 +17,16 @@
           >
             {{ link.label }}
           </NuxtLink>
-          <CommonButton variant="primary" size="sm">
-            Masuk
-          </CommonButton>
+
+          <!-- Masuk  -->
+          <NuxtLink to="/auth/login">
+            <CommonButton variant="primary" size="sm">
+              Masuk
+            </CommonButton>
+          </NuxtLink>
         </div>
 
-        <!-- Mobile menu button -->
+        <!-- Mobile menu  -->
         <button 
           @click="isMenuOpen = !isMenuOpen"
           class="md:hidden text-white p-2"
@@ -31,7 +35,7 @@
         </button>
       </div>
 
-      <!-- Mobile menu -->
+      <!-- menu -->
       <div v-if="isMenuOpen" class="md:hidden mt-4 pb-4 space-y-4">
         <NuxtLink 
           v-for="link in navLinks" 
@@ -42,9 +46,17 @@
         >
           {{ link.label }}
         </NuxtLink>
-        <CommonButton variant="primary" size="sm" class="w-full">
-          Masuk
-        </CommonButton>
+
+        <!-- Tombol Masuk  -->
+        <NuxtLink 
+          to="/auth/login" 
+          class="block"
+          @click="isMenuOpen = false"
+        >
+          <CommonButton variant="primary" size="sm" class="w-full">
+            Masuk
+          </CommonButton>
+        </NuxtLink>
       </div>
     </nav>
   </header>
@@ -58,7 +70,5 @@ const isMenuOpen = ref(false)
 const navLinks = [
   { to: '/#features', label: 'Fitur' },
   { to: '/#about', label: 'Tentang' },
-  { to: '/dashboard', label: 'Dashboard' },
 ]
 </script>
-
