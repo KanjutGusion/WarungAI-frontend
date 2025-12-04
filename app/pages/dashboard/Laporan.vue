@@ -42,9 +42,9 @@
 
         <!-- RINGKASAN -->
         <section class="bg-slate-800 border border-slate-700 rounded-xl p-6 space-y-4">
-          <h2 class="text-lg font-semibold text-white">Ringkasan Hari Ini</h2>
+          <h2 class="text-lg font-semibold text-white">Ringkasan Minggu Ini</h2>
 
-          <!-- LOADING STATE -->
+          <!-- LOADING  -->
           <div v-if="isLoading" class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div
               v-for="n in 4"
