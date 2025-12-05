@@ -4,6 +4,7 @@
 FROM node:22-alpine AS deps
 WORKDIR /app
 
+
 # Install dependencies needed for native modules
 RUN apk add --no-cache libc6-compat
 
@@ -18,6 +19,11 @@ RUN npm ci --legacy-peer-deps
 # ================================
 FROM node:22-alpine AS builder
 WORKDIR /app
+ARG API_BASE_URL
+ARG API_VERSION
+ENV API_BASE_URL=$API_BASE_URL
+ENV API_VERSION=$API_VERSION
+ENV NODE_ENV=production
 
 # Copy dependencies from deps stage
 COPY --from=deps /app/node_modules ./node_modules
@@ -39,6 +45,7 @@ ENV NODE_ENV=production
 ENV NUXT_HOST=0.0.0.0
 ENV NUXT_PORT=3000
 ENV NUXT_PUBLIC_ENABLE_DEVTOOLS=false
+
 # Install curl for healthcheck
 RUN apk add --no-cache curl
 
