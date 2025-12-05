@@ -1,8 +1,8 @@
 <template>
-  <aside class="w-64 bg-slate-950 border-r border-slate-800 flex flex-col">
+  <aside class="w-64 bg-white dark:bg-slate-950 border-r border-gray-200 dark:border-slate-800 flex flex-col transition-colors duration-300">
     <!-- Brand -->
-    <div class="px-6 py-4 border-b border-purple-600/30">
-      <h1 class="text-2xl font-extrabold text-white tracking-wider">
+    <div class="px-6 py-4 border-b border-purple-300 dark:border-purple-600/30">
+      <h1 class="text-2xl font-extrabold text-slate-900 dark:text-white tracking-wider">
         <span>W</span>arung<span>AI</span>
       </h1>
     </div>
@@ -14,7 +14,7 @@
         <button
           v-if="item.action === 'logout'"
           @click="handleNav(item)"
-          class="group flex items-center w-full px-4 py-2 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition-all duration-200"
+          class="group flex items-center w-full px-4 py-2 rounded-xl text-sm font-medium text-gray-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-all duration-200"
         >
           <span class="mr-3 text-lg">{{ item.icon }}</span>
           <span>{{ item.label }}</span>
@@ -34,10 +34,10 @@
     </nav>
 
     <!-- Footer link -->
-    <div class="mt-auto px-6 py-4 border-t border-slate-800/50">
+    <div class="mt-auto px-6 py-4 border-t border-gray-200 dark:border-slate-800/50">
       <NuxtLink
         to="/"
-        class="flex items-center justify-center text-sm text-purple-400 hover:text-purple-300 transition"
+        class="flex items-center justify-center text-sm text-purple-600 dark:text-purple-400 hover:text-purple-500 dark:hover:text-purple-300 transition"
       >
         ← Kembali ke Beranda
       </NuxtLink>
@@ -71,8 +71,8 @@ const navItems: NavItem[] = [
 const linkClass = (to: string) => {
   const isActive = route.path === to
   return isActive
-    ? 'bg-purple-600/20 text-purple-300 font-semibold border-l-4 border-purple-500 hover:bg-purple-600/30'
-    : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+    ? 'bg-purple-100 dark:bg-purple-600/20 text-purple-700 dark:text-purple-300 font-semibold border-l-4 border-purple-500 hover:bg-purple-200 dark:hover:bg-purple-600/30'
+    : 'text-gray-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
 }
 
 const handleNav = (item: NavItem) => {

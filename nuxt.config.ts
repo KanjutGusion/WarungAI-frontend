@@ -12,6 +12,13 @@ export default defineNuxtConfig({
   // Modules
   modules: ["@nuxtjs/tailwindcss"],
 
+  // Tailwind CSS config
+  tailwindcss: {
+    config: {
+      darkMode: 'class'
+    }
+  },
+
   // Global CSS
   css: ["~/assets/css/main.css"],
 

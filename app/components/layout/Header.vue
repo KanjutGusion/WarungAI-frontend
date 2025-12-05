@@ -1,10 +1,11 @@
 <template>
-  <header class="fixed top-0 left-0 right-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-white/10">
+  <header class="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-slate-900/80 backdrop-blur-md border-b border-gray-200 dark:border-white/10 shadow-sm dark:shadow-none transition-colors duration-300">
     <nav class="max-w-6xl mx-auto px-6 py-4">
       <div class="flex justify-between items-center">
         <!-- Logo -->
-        <NuxtLink to="/" class="text-2xl font-bold text-white hover:text-purple-400 transition">
-          🍜 WarungAI
+        <NuxtLink to="/" class="flex items-center space-x-2 hover:opacity-80 transition">
+          <img src="~/assets/images/logo_warung_Ai.png" alt="WarungAI Logo" class="h-10 w-auto" />
+          <span class="text-2xl font-bold text-slate-900 dark:text-white">WarungAI</span>
         </NuxtLink>
 
         <!-- Navigation  -->
@@ -13,7 +14,7 @@
             v-for="link in navLinks" 
             :key="link.to"
             :to="link.to"
-            class="text-gray-300 hover:text-white transition"
+            class="text-gray-600 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white transition"
           >
             {{ link.label }}
           </NuxtLink>
@@ -29,7 +30,7 @@
         <!-- Mobile menu  -->
         <button 
           @click="isMenuOpen = !isMenuOpen"
-          class="md:hidden text-white p-2"
+          class="md:hidden text-slate-900 dark:text-white p-2"
         >
           <span class="text-2xl">☰</span>
         </button>
@@ -41,7 +42,7 @@
           v-for="link in navLinks" 
           :key="link.to"
           :to="link.to"
-          class="block text-gray-300 hover:text-white transition"
+          class="block text-gray-600 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white transition"
           @click="isMenuOpen = false"
         >
           {{ link.label }}

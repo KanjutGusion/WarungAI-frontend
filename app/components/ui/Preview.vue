@@ -1,8 +1,9 @@
 <template>
   <div
     class="relative w-full max-w-xl aspect-[16/9] rounded-2xl overflow-hidden 
-           border border-slate-700/70 bg-slate-900 shadow-2xl shadow-black/40
-           animate-fade-slide animate-floating"
+           border border-gray-200 dark:border-slate-700/70 bg-white dark:bg-slate-900 
+           shadow-2xl shadow-gray-400/30 dark:shadow-black/40
+           animate-fade-slide animate-floating transition-colors duration-300"
   >
     <img 
       src="/assets/css/images.jpeg" 
@@ -10,7 +11,7 @@
       class="w-full h-full object-cover"
     />
 
-    <div class="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-white/5"></div>
+    <div class="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-gray-200/50 dark:ring-white/5"></div>
   </div>
 </template>
 
