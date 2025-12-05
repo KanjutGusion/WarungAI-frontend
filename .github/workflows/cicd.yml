@@ -3,7 +3,8 @@ name: Build and Deploy
 on:
   push:
     branches: [main]
-
+  workflow_dispatch:
+    
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
@@ -47,3 +48,6 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            API_BASE_URL=${{ secrets.API_BASE_URL }}
+            API_VERSION=${{ secrets.API_VERSION }}
