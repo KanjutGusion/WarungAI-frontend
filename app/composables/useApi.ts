@@ -36,12 +36,20 @@ export const useApi = () => {
   /**
    * POST request
    */
-  const post = <T>(endpoint: string, body: unknown) =>
+  const post = <T>(
+    endpoint: string,
+    body: unknown,
+    options?: { headers?: Record<string, string> }
+  ) =>
     fetchApi<T>(endpoint, {
       method: "POST",
       body: JSON.stringify(body),
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        ...options?.headers, // merge headers tambahan, misal Authorization
+      },
     });
+  
 
   /**
    * PUT request

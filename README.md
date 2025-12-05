@@ -59,6 +59,34 @@ Buka [http://localhost:3000](http://localhost:3000) di browser.
 
 ## 🐳 Docker
 
+## Buat file compose.yml
+```
+nano compose.yml
+```
+
+## Quick run
+```bash
+services:
+  warungai-frontend:
+    image: ghcr.io/kanjutgusion/warungai-frontend:latest
+    container_name: warungai-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NUXT_HOST=0.0.0.0
+      - NUXT_PORT=3000
+      - API_BASE_URL=http://localhost:3001
+      - API_VERSION=v1
+    restart: unless-stopped
+```
+## Jalankan
+```
+docker compose up -d
+```
+
+
+
 ### Production
 
 ```bash
@@ -80,7 +108,7 @@ docker-compose --profile dev up warungai-frontend-dev
 Buat file `.env` berdasarkan `.env.example`:
 
 ```env
-API_BASE_URL=http://localhost:8000/api
+API_BASE_URL=http://localhost:3001/api
 ```
 
 ## 📄 Halaman

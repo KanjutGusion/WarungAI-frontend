@@ -3,16 +3,14 @@
   <div class="grid grid-cols-1 lg:grid-cols-[2fr,1.2fr] gap-6 items-stretch">
     <!-- Upload Nota -->
     <div
-      class="lg:col-span-1 bg-slate-900/80 border border-slate-800/80
-             rounded-2xl overflow-hidden shadow-[0_18px_40px_rgba(15,23,42,0.8)]
-             flex flex-col min-w-0"
+      class="lg:col-span-1 bg-slate-900/80 border border-slate-800/80 rounded-2xl overflow-hidden shadow-[0_18px_40px_rgba(15,23,42,0.8)] flex flex-col min-w-0"
     >
       <!-- Header -->
-      <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between">
+      <div
+        class="px-6 py-4 border-b border-slate-800 flex items-center justify-between"
+      >
         <div>
-          <h2 class="text-lg font-semibold text-slate-50">
-            Upload Nota
-          </h2>
+          <h2 class="text-lg font-semibold text-slate-50">Upload Nota</h2>
           <p class="text-xs text-slate-400 mt-1">
             Upload foto nota untuk hitung omzet &amp; parsing OCR.
           </p>
@@ -33,19 +31,17 @@
 
           <!-- Status file -->
           <div
-            class="text-xs text-slate-400 border border-dashed border-slate-700
-                   rounded-xl px-4 py-3 bg-slate-900/70"
+            class="text-xs text-slate-400 border border-dashed border-slate-700 rounded-xl px-4 py-3 bg-slate-900/70"
           >
-            <p class="font-semibold text-slate-100 mb-1">
-              Status file
-            </p>
+            <p class="font-semibold text-slate-100 mb-1">Status file</p>
 
             <p v-if="fileName" class="flex items-center gap-1">
-              📄 <span class="text-slate-50 font-medium truncate">{{ fileName }}</span>
+              📄
+              <span class="text-slate-50 font-medium truncate">{{
+                fileName
+              }}</span>
             </p>
-            <p v-else class="italic">
-              Belum ada file yang dipilih.
-            </p>
+            <p v-else class="italic">Belum ada file yang dipilih.</p>
 
             <p class="mt-2">
               Format yang didukung:
@@ -56,8 +52,7 @@
           <!-- Error -->
           <p
             v-if="uploadError"
-            class="text-xs text-red-400 bg-red-950/40 border border-red-500/40
-                   rounded-lg px-3 py-2"
+            class="text-xs text-red-400 bg-red-950/40 border border-red-500/40 rounded-lg px-3 py-2"
           >
             {{ uploadError }}
           </p>
@@ -66,9 +61,7 @@
           <button
             type="button"
             @click="selectFile"
-            class="w-full bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium
-                   px-4 py-3 rounded-lg transition flex items-center justify-center gap-2
-                   disabled:opacity-50 disabled:cursor-not-allowed"
+            class="w-full bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium px-4 py-3 rounded-lg transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             :disabled="isUploading"
           >
             <span v-if="!isUploading">Pilih Nota</span>
@@ -81,9 +74,7 @@
           <!-- Tombol proses -->
           <button
             type="button"
-            class="w-full border border-slate-700 text-slate-100 hover:bg-slate-800
-                   text-xs font-medium px-4 py-2.5 rounded-lg transition
-                   disabled:opacity-40 disabled:cursor-not-allowed"
+            class="w-full border border-slate-700 text-slate-100 hover:bg-slate-800 text-xs font-medium px-4 py-2.5 rounded-lg transition disabled:opacity-40 disabled:cursor-not-allowed"
             :disabled="!selectedFile || isUploading"
             @click="handleProcess"
           >
@@ -92,41 +83,51 @@
         </div>
 
         <!-- Preview Nota -->
-        <div class="space-y-2">
-          <p class="text-xs font-medium text-slate-300">
-            Preview Nota
-          </p>
-          <div
-            class="aspect-[4/3] w-full rounded-xl border border-slate-800
-                   bg-slate-950 flex items-center justify-center overflow-hidden"
-          >
-            <img
-              v-if="previewUrl"
-              :src="previewUrl"
-              alt="Preview nota"
-              class="w-full h-full object-contain"
-            />
+          <div class="space-y-2">
+            <p class="text-xs font-medium text-slate-300">Preview Nota</p>
             <div
-              v-else
-              class="flex flex-col items-center justify-center text-slate-500 text-xs px-6 text-center"
+              class="aspect-[4/3] w-full rounded-xl border border-slate-800 bg-slate-950 flex items-center justify-center overflow-hidden relative"
             >
-              <span class="text-3xl mb-2">🧾</span>
-              Pilih file nota untuk melihat preview di sini.
+              <!-- Preview gambar -->
+              <img
+                v-if="previewUrl"
+                :src="previewUrl"
+                alt="Preview nota"
+                class="w-full h-full object-contain"
+              />
+
+              <!-- Placeholder jika belum ada file -->
+              <div
+                v-else
+                class="flex flex-col items-center justify-center text-slate-500 text-xs px-6 text-center"
+              >
+                <span class="text-3xl mb-2">🧾</span>
+                Pilih file nota untuk melihat preview di sini.
+              </div>
+
+              <!-- Tombol exit -->
+              <button
+                v-if="previewUrl"
+                @click="clearPreview"
+                class="absolute top-2 right-2 bg-red-600 text-white text-xs px-2 py-1 rounded hover:bg-red-700"
+              >
+                ✕ Delete
+              </button>
             </div>
           </div>
-        </div>
+
+         
       </div>
     </div>
 
     <!--  Hasil OCR Parsing -->
     <div
-      class="bg-slate-900/80 border border-slate-800/80 rounded-2xl overflow-hidden
-             shadow-[0_18px_40px_rgba(15,23,42,0.7)] flex flex-col min-w-0"
+      class="bg-slate-900/80 border border-slate-800/80 rounded-2xl overflow-hidden shadow-[0_18px_40px_rgba(15,23,42,0.7)] flex flex-col min-w-0"
     >
-      <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between">
-        <h2 class="text-lg font-semibold text-slate-50">
-          Hasil OCR Parsing
-        </h2>
+      <div
+        class="px-6 py-4 border-b border-slate-800 flex items-center justify-between"
+      >
+        <h2 class="text-lg font-semibold text-slate-50">Hasil OCR Parsing</h2>
       </div>
 
       <div class="p-4 space-y-3 flex-1 min-h-[260px]">
@@ -153,7 +154,7 @@
                 :key="row.id"
                 class="border-b border-slate-800/80 last:border-0"
               >
-                <td class="py-2 pr-4">{{ row.product }}</td>
+                <td class="py-2 pr-4">{{ row.name}}</td>
                 <td class="py-2 pr-4">{{ row.qty }}</td>
                 <td class="py-2 pr-4">{{ formatRupiah(row.price) }}</td>
                 <td class="py-2 pr-4 text-right">
@@ -169,16 +170,16 @@
 </template>
 
 <script setup lang="ts">
-import { useOcrUpload, type OcrRow } from '~/composables/useOcrUpload'
+import { useOcrUpload } from "~/composables/useOcrUpload";
 
 const emit = defineEmits<{
-  'ocr-parsed': [rows: OcrRow[]]
-}>()
+  "ocr-parsed": [rows: OcrRow[]];
+}>();
 
 const props = defineProps<{
-  ocrRows: OcrRow[]
-  formatRupiah: (amount: number) => string
-}>()
+  ocrRows: OcrRow[];
+  formatRupiah: (amount: number) => string;
+}>();
 
 const {
   fileInput,
@@ -190,9 +191,16 @@ const {
   selectFile,
   onFileChange,
   processUpload,
-} = useOcrUpload()
+} = useOcrUpload();
+// Fungsi untuk menghapus preview
+const clearPreview = () => {
+  previewUrl.value = "";
+  selectedFile.value = null;
+  fileName.value = "";
+  if (fileInput.value) fileInput.value.value = ""; // reset input
+};
 
-const handleProcess = () => {
-  processUpload((rows) => emit('ocr-parsed', rows))
-}
+const handleProcess = async () => {
+  processUpload((rows) => emit("ocr-parsed", rows));
+};
 </script>

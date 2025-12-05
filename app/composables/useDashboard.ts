@@ -1,14 +1,6 @@
 //dummy
 import { ref, computed } from 'vue'
 
-export type OcrRow = {
-    id: number
-    product: string
-    qty: number
-    price: number
-    total: number
-}
-
 export type Stat = {
     icon: string
     value: string

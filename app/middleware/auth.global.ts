@@ -9,7 +9,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   const authPages = ["/auth/login", "/auth/register"];
   // Halaman publik
   if (authPages.includes(to.path) && token.value) {
-    console.log("User sudah login, redirect dari auth page");
     return navigateTo("/dashboard");
   }
 

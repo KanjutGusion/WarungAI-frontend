@@ -16,12 +16,20 @@ export const useAuth = () => {
     phone: string
   ) => {
     try {
-      const response = await api.post<AuthResponse>("/auth/register", {
-        username,
-        phone,
-        email,
-        password,
-      });
+      const response = await api.post<AuthResponse>(
+        "/auth/register",
+        {
+          username,
+          phone,
+          email,
+          password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       return { success: true, status: 200, data: response };
     } catch (err: any) {
       // $fetch throw error untuk non-2xx
@@ -41,15 +49,26 @@ export const useAuth = () => {
    */
   const login = async (email: string, password: string) => {
     try {
-      const response = await api.post<AuthResponse>("/auth/login", {
-        email,
-        password,
-      });
+      const response = await api.post<AuthResponse>(
+        "/auth/login",
+        {
+          email,
+          password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       user.value = response.user;
 
       // Store token di cookie
-      const token = useCookie("auth_token",{ path: '/', maxAge: 60 * 60 * 24 });
+      const token = useCookie("auth_token", {
+        path: "/",
+        maxAge: 60 * 60 * 24,
+      });
       token.value = response.token;
       user.value = response.user;
       return {
@@ -84,7 +103,7 @@ export const useAuth = () => {
    * Check if user is authenticated
    */
   const checkAuth = async () => {
-    const token = useCookie("auth_token", { path: "/"});
+    const token = useCookie("auth_token", { path: "/" });
     if (!token.value) {
       return {
         success: false,
@@ -104,8 +123,6 @@ export const useAuth = () => {
         data: response,
       };
     } catch (err: any) {
-      console.log(err)
-      // Token expired atau invalid
       logout();
       // $fetch throw error untuk non-2xx
       const status = err?.response?.status || null;
@@ -138,8 +155,8 @@ interface User {
   status: string;
   user_role: {
     id: string;
-    name: string
-  }
+    name: string;
+  };
 }
 
 interface AuthResponse {
