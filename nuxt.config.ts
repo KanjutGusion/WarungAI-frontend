@@ -23,9 +23,14 @@ export default defineNuxtConfig({
     // Public keys (exposed to client)
     public: {
       // API
-      apiBase: process.env.API_BASE_URL || "http://localhost:3001",
+      apiBase:
+        process.env.NUXT_PUBLIC_API_BASE ||
+        process.env.API_BASE_URL ||
+        "http://localhost:3001",
+
+      apiVersion:
+        process.env.NUXT_PUBLIC_API_VERSION || process.env.API_VERSION || "v1",
       apiTimeout: parseInt(process.env.API_TIMEOUT || "30000"),
-      apiVersion: process.env.API_VERSION || "v1",
       // App
       appName: process.env.NUXT_PUBLIC_APP_NAME || "WarungAI",
       appDescription:
