@@ -45,8 +45,7 @@ ENV NODE_ENV=production
 ENV NUXT_HOST=0.0.0.0
 ENV NUXT_PORT=3000
 ENV NUXT_PUBLIC_ENABLE_DEVTOOLS=false
-ENV NUXT_PUBLIC_API_BASE=http://localhost:3001
-ENV NUXT_PUBLIC_API_VERSION=v1
+
 # Install curl for healthcheck
 RUN apk add --no-cache curl
 

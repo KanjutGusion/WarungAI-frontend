@@ -76,10 +76,12 @@ services:
       - NODE_ENV=production
       - NUXT_HOST=0.0.0.0
       - NUXT_PORT=3000
-      - API_BASE_URL=http://localhost:3001
-      - API_VERSION=v1
+      - NUXT_PUBLIC_API_BASE={{API_BASE_URL}}
+      - NUXT_PUBLIC_API_VERSION=v1
     restart: unless-stopped
 ```
+Ubah NUXT_PUBLIC_API_BASE agar merujuk ke container backend yang sedang di running
+Atau setting environment variable untuk API_BASE_URL
 ## Jalankan
 ```
 docker compose up -d
