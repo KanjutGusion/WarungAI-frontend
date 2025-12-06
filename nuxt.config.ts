@@ -12,6 +12,13 @@ export default defineNuxtConfig({
   // Modules
   modules: ["@nuxtjs/tailwindcss"],
 
+  // Tailwind CSS config
+  tailwindcss: {
+    config: {
+      darkMode: 'class'
+    }
+  },
+
   // Global CSS
   css: ["~/assets/css/main.css"],
 
@@ -89,9 +96,11 @@ export default defineNuxtConfig({
             "Platform AI untuk UMKM Indonesia",
         },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
-        { name: "theme-color", content: "#6366f1" },
+        { name: "theme-color", content: "#f59e0b" },
       ],
-      link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+      link: [
+        { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+      ],
     },
   },
 });

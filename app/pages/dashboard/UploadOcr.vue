@@ -3,15 +3,15 @@
   <div class="grid grid-cols-1 lg:grid-cols-[2fr,1.2fr] gap-6 items-stretch">
     <!-- Upload Nota -->
     <div
-      class="lg:col-span-1 bg-slate-900/80 border border-slate-800/80 rounded-2xl overflow-hidden shadow-[0_18px_40px_rgba(15,23,42,0.8)] flex flex-col min-w-0"
+      class="lg:col-span-1 bg-white dark:bg-slate-900/80 border border-gray-200 dark:border-slate-800/80 rounded-2xl overflow-hidden shadow-lg dark:shadow-[0_18px_40px_rgba(15,23,42,0.8)] flex flex-col min-w-0"
     >
       <!-- Header -->
       <div
-        class="px-6 py-4 border-b border-slate-800 flex items-center justify-between"
+        class="px-6 py-4 border-b border-gray-200 dark:border-slate-800 flex items-center justify-between"
       >
         <div>
-          <h2 class="text-lg font-semibold text-slate-50">Upload Nota</h2>
-          <p class="text-xs text-slate-400 mt-1">
+          <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-50">Upload Nota</h2>
+          <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">
             Upload foto nota untuk hitung omzet &amp; parsing OCR.
           </p>
         </div>
@@ -31,13 +31,13 @@
 
           <!-- Status file -->
           <div
-            class="text-xs text-slate-400 border border-dashed border-slate-700 rounded-xl px-4 py-3 bg-slate-900/70"
+            class="text-xs text-gray-500 dark:text-slate-400 border border-dashed border-gray-300 dark:border-slate-700 rounded-xl px-4 py-3 bg-gray-50 dark:bg-slate-900/70"
           >
-            <p class="font-semibold text-slate-100 mb-1">Status file</p>
+            <p class="font-semibold text-slate-900 dark:text-slate-100 mb-1">Status file</p>
 
             <p v-if="fileName" class="flex items-center gap-1">
               📄
-              <span class="text-slate-50 font-medium truncate">{{
+              <span class="text-slate-800 dark:text-slate-50 font-medium truncate">{{
                 fileName
               }}</span>
             </p>
@@ -45,14 +45,14 @@
 
             <p class="mt-2">
               Format yang didukung:
-              <span class="text-slate-100 font-medium">JPG, PNG</span>
+              <span class="text-slate-800 dark:text-slate-100 font-medium">JPG, PNG</span>
             </p>
           </div>
 
           <!-- Error -->
           <p
             v-if="uploadError"
-            class="text-xs text-red-400 bg-red-950/40 border border-red-500/40 rounded-lg px-3 py-2"
+            class="text-xs text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-950/40 border border-red-300 dark:border-red-500/40 rounded-lg px-3 py-2"
           >
             {{ uploadError }}
           </p>
@@ -74,7 +74,7 @@
           <!-- Tombol proses -->
           <button
             type="button"
-            class="w-full border border-slate-700 text-slate-100 hover:bg-slate-800 text-xs font-medium px-4 py-2.5 rounded-lg transition disabled:opacity-40 disabled:cursor-not-allowed"
+            class="w-full border border-gray-300 dark:border-slate-700 text-slate-700 dark:text-slate-100 hover:bg-gray-100 dark:hover:bg-slate-800 text-xs font-medium px-4 py-2.5 rounded-lg transition disabled:opacity-40 disabled:cursor-not-allowed"
             :disabled="!selectedFile || isUploading"
             @click="handleProcess"
           >
@@ -84,9 +84,9 @@
 
         <!-- Preview Nota -->
           <div class="space-y-2">
-            <p class="text-xs font-medium text-slate-300">Preview Nota</p>
+            <p class="text-xs font-medium text-gray-600 dark:text-slate-300">Preview Nota</p>
             <div
-              class="aspect-[4/3] w-full rounded-xl border border-slate-800 bg-slate-950 flex items-center justify-center overflow-hidden relative"
+              class="aspect-[4/3] w-full rounded-xl border border-gray-200 dark:border-slate-800 bg-gray-100 dark:bg-slate-950 flex items-center justify-center overflow-hidden relative"
             >
               <!-- Preview gambar -->
               <img
@@ -99,7 +99,7 @@
               <!-- Placeholder jika belum ada file -->
               <div
                 v-else
-                class="flex flex-col items-center justify-center text-slate-500 text-xs px-6 text-center"
+                class="flex flex-col items-center justify-center text-gray-400 dark:text-slate-500 text-xs px-6 text-center"
               >
                 <span class="text-3xl mb-2">🧾</span>
                 Pilih file nota untuk melihat preview di sini.
@@ -122,26 +122,26 @@
 
     <!--  Hasil OCR Parsing -->
     <div
-      class="bg-slate-900/80 border border-slate-800/80 rounded-2xl overflow-hidden shadow-[0_18px_40px_rgba(15,23,42,0.7)] flex flex-col min-w-0"
+      class="bg-white dark:bg-slate-900/80 border border-gray-200 dark:border-slate-800/80 rounded-2xl overflow-hidden shadow-lg dark:shadow-[0_18px_40px_rgba(15,23,42,0.7)] flex flex-col min-w-0"
     >
       <div
-        class="px-6 py-4 border-b border-slate-800 flex items-center justify-between"
+        class="px-6 py-4 border-b border-gray-200 dark:border-slate-800 flex items-center justify-between"
       >
-        <h2 class="text-lg font-semibold text-slate-50">Hasil OCR Parsing</h2>
+        <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-50">Hasil OCR Parsing</h2>
       </div>
 
       <div class="p-4 space-y-3 flex-1 min-h-[260px]">
         <div
           v-if="!ocrRows.length"
-          class="h-full flex items-center justify-center text-xs text-slate-400 italic text-center px-4"
+          class="h-full flex items-center justify-center text-xs text-gray-500 dark:text-slate-400 italic text-center px-4"
         >
           Belum ada data OCR. Upload &amp; proses nota terlebih dahulu.
         </div>
 
         <div v-else class="overflow-x-auto max-h-[320px]">
-          <table class="min-w-full text-xs text-slate-100">
-            <thead class="bg-slate-900/90 sticky top-0">
-              <tr class="text-left border-b border-slate-800">
+          <table class="min-w-full text-xs text-slate-800 dark:text-slate-100">
+            <thead class="bg-gray-100 dark:bg-slate-900/90 sticky top-0">
+              <tr class="text-left border-b border-gray-200 dark:border-slate-800">
                 <th class="py-2 pr-4 font-semibold">Produk</th>
                 <th class="py-2 pr-4 font-semibold">Qty</th>
                 <th class="py-2 pr-4 font-semibold">Harga</th>
@@ -152,7 +152,7 @@
               <tr
                 v-for="row in ocrRows"
                 :key="row.id"
-                class="border-b border-slate-800/80 last:border-0"
+                class="border-b border-gray-200 dark:border-slate-800/80 last:border-0"
               >
                 <td class="py-2 pr-4">{{ row.name}}</td>
                 <td class="py-2 pr-4">{{ row.qty }}</td>
