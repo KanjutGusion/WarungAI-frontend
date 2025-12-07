@@ -52,7 +52,7 @@ export function useFinanceReport() {
 
       const token = useCookie('auth_token', { path: '/' })
 
-      // Fetch dari Analytics API
+      // Fetch sales summary dari Analytics API
       const salesSummary = await api.get<{
         total_sales: number
         total_profit: number
@@ -65,12 +65,27 @@ export function useFinanceReport() {
         },
       })
 
+      // Fetch top items untuk count unique products
+      const topItems = await api.get<Array<{
+        name: string
+        total_qty: number
+        total_revenue: number
+        frequency: number
+      }>>('/analytics/top-items?limit=1000', {
+        headers: {
+          Authorization: `Bearer ${token.value}`,
+        },
+      })
+
+      // Calculate expenses: total_sales - total_profit = expenses
+      const totalExpenses = (salesSummary.total_sales || 0) - (salesSummary.total_profit || 0)
+
       // Map data dari API ke format summary
       summary.value = {
         omzetToday: salesSummary.total_sales || 0,
         totalTransactions: salesSummary.transaction_count || 0,
-        uniqueProducts: 0, // Will be filled by top-items endpoint if needed
-        totalExpenses: 0, // Calculate from profit if needed
+        uniqueProducts: topItems.length || 0, // Count unique products
+        totalExpenses: totalExpenses > 0 ? totalExpenses : 0, // Total pengeluaran
       }
 
     } catch (err: any) {
