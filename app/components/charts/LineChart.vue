@@ -108,7 +108,7 @@ const createChart = () => {
           displayColors: false,
           callbacks: {
             label: (context) => {
-              const value = context.parsed.y
+              const value = context.parsed.y ?? 0
               return new Intl.NumberFormat('id-ID', {
                 style: 'currency',
                 currency: 'IDR',
@@ -132,9 +132,11 @@ const createChart = () => {
         },
         y: {
           beginAtZero: true,
+          border: {
+            display: false,
+          },
           grid: {
             color: gridColor,
-            drawBorder: false,
           },
           ticks: {
             color: textColor,

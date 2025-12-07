@@ -3,9 +3,9 @@
     <button
       v-if="!isOpen"
       @click="toggleSidebar"
-      class="lg:hidden fixed top-4 left-4 z-[60] p-2.5 rounded-xl bg-white dark:bg-slate-800 
+      class="lg:hidden fixed top-3 left-3 z-[60] p-2 rounded-lg bg-white/95 dark:bg-slate-800/95 
              border border-gray-200 dark:border-slate-700 
-             shadow-lg hover:shadow-xl
+             shadow-md hover:shadow-lg backdrop-blur-sm
              text-gray-600 dark:text-slate-300
              hover:bg-gray-50 dark:hover:bg-slate-700
              transition-all duration-300
@@ -14,7 +14,7 @@
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        class="h-6 w-6"
+        class="h-5 w-5"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"

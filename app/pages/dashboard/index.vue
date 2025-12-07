@@ -11,40 +11,40 @@
     <!-- Theme Toggle Button -->
     <button
       @click="toggleTheme"
-      class="fixed bottom-6 right-6 z-50 group flex items-center gap-2 px-4 py-2.5 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer bg-slate-800/90 dark:bg-white/90 backdrop-blur-sm hover:scale-105 active:scale-95"
+      class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 group flex items-center gap-1.5 sm:gap-2 px-3 py-2 sm:px-4 sm:py-2.5 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer bg-slate-800/90 dark:bg-white/90 backdrop-blur-sm hover:scale-105 active:scale-95"
       :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
       :title="isDark ? 'Mode Terang' : 'Mode Gelap'"
     >
       <span
-        class="text-lg select-none transition-transform duration-300 group-hover:rotate-12"
+        class="text-base sm:text-lg select-none transition-transform duration-300 group-hover:rotate-12"
       >
         {{ isDark ? "☀️" : "🌙" }}
       </span>
       <span
-        class="text-sm font-medium text-white dark:text-slate-800 hidden sm:inline"
+        class="text-xs sm:text-sm font-medium text-white dark:text-slate-800 hidden sm:inline"
       >
         {{ isDark ? "Terang" : "Gelap" }}
       </span>
     </button>
 
     <!--  konten -->
-    <main class="flex-1 px-4 py-6 sm:px-6 lg:px-10 lg:pl-10">
-      <div class="w-full space-y-10">
+    <main class="flex-1 px-3 pt-14 pb-6 sm:px-6 sm:pt-6 lg:px-10 lg:pl-10 lg:pt-6 overflow-x-hidden">
+      <div class="w-full max-w-7xl mx-auto space-y-6 sm:space-y-10">
         <!-- Header -->
-        <header class="flex items-center justify-between">
+        <header class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1
-              class="text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight"
+              class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight"
             >
               Dashboard
             </h1>
-            <p class="text-gray-600 dark:text-gray-400 mt-1 text-base">
-              Selamat datang,{{ user?.username }} ini total ringkasan warungmu.
+            <p class="text-gray-600 dark:text-gray-400 mt-1 text-sm sm:text-base">
+              Selamat datang, {{ user?.username }} ini total ringkasan warungmu.
             </p>
           </div>
 
           <span
-            class="text-sm font-medium text-slate-600 dark:text-slate-300 border border-gray-300 dark:border-slate-700 px-3 py-1 rounded-full bg-white dark:bg-slate-800/50"
+            class="text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-300 border border-gray-300 dark:border-slate-700 px-2 sm:px-3 py-1 rounded-full bg-white dark:bg-slate-800/50 w-fit"
           >
             {{ todayLabel }}
           </span>

@@ -10,31 +10,30 @@
     <!-- Theme Toggle Button -->
     <button
       @click="toggleTheme"
-      class="fixed bottom-6 right-6 z-50 group flex items-center gap-2 px-4 py-2.5 rounded-full 
+      class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 group flex items-center gap-1.5 sm:gap-2 px-3 py-2 sm:px-4 sm:py-2.5 rounded-full 
              shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer
              bg-slate-800/90 dark:bg-white/90 backdrop-blur-sm
              hover:scale-105 active:scale-95"
       :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
       :title="isDark ? 'Mode Terang' : 'Mode Gelap'"
     >
-      <span class="text-lg select-none transition-transform duration-300 group-hover:rotate-12">
+      <span class="text-base sm:text-lg select-none transition-transform duration-300 group-hover:rotate-12">
         {{ isDark ? '☀️' : '🌙' }}
       </span>
-      <span class="text-sm font-medium text-white dark:text-slate-800 hidden sm:inline">
+      <span class="text-xs sm:text-sm font-medium text-white dark:text-slate-800 hidden sm:inline">
         {{ isDark ? 'Terang' : 'Gelap' }}
       </span>
     </button>
 
     <!-- KONTEN  -->
-    <main class="flex-1 px-4 py-6 sm:px-6 lg:px-10 lg:pl-10">
-      <div class="w-full space-y-8">
+    <main class="flex-1 px-3 pt-14 pb-6 sm:px-6 sm:pt-6 lg:px-10 lg:pl-10 lg:pt-6 overflow-x-hidden">
+      <div class="w-full max-w-7xl mx-auto space-y-6 sm:space-y-8">
        <!-- Header -->
-        <header class="flex items-center justify-between">
+        <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <div class="flex items-center gap-3">
-            
             <div>
-              <h1 class="text-3xl font-bold text-slate-900 dark:text-white">Laporan Keuangan</h1>
-              <p class="text-gray-600 dark:text-gray-400 mt-1 text-sm">
+              <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white">Laporan Keuangan</h1>
+              <p class="text-gray-600 dark:text-gray-400 mt-1 text-xs sm:text-sm">
                Catat pemasukan dan pengeluaran secara otomatis dari hasil OCR nota
               </p>
             </div>
@@ -62,79 +61,79 @@
         </div>
 
         <!-- RINGKASAN -->
-        <section class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl p-6 space-y-4 shadow-sm dark:shadow-none">
-          <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Ringkasan Minggu Ini</h2>
+        <section class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl p-4 sm:p-6 space-y-4 shadow-sm dark:shadow-none">
+          <h2 class="text-base sm:text-lg font-semibold text-slate-900 dark:text-white">Ringkasan Minggu Ini</h2>
 
           <!-- LOADING  -->
-          <div v-if="isLoading" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div v-if="isLoading" class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             <div
               v-for="n in 4"
               :key="n"
-              class="p-4 bg-gray-100 dark:bg-slate-900/40 rounded-lg border border-gray-200 dark:border-slate-700 animate-pulse"
+              class="p-3 sm:p-4 bg-gray-100 dark:bg-slate-900/40 rounded-lg border border-gray-200 dark:border-slate-700 animate-pulse"
             >
-              <div class="h-3 w-16 bg-gray-300 dark:bg-slate-700 rounded mb-2"></div>
-              <div class="h-5 w-24 bg-gray-200 dark:bg-slate-600 rounded"></div>
+              <div class="h-3 w-12 sm:w-16 bg-gray-300 dark:bg-slate-700 rounded mb-2"></div>
+              <div class="h-4 sm:h-5 w-16 sm:w-24 bg-gray-200 dark:bg-slate-600 rounded"></div>
             </div>
           </div>
 
           <!-- DATA -->
-          <div v-else class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="p-4 bg-gray-50 dark:bg-slate-900/40 rounded-lg border border-gray-200 dark:border-slate-700">
-              <p class="text-xs text-gray-500 dark:text-slate-400">Total Omzet</p>
-              <p class="text-lg font-bold text-purple-600 dark:text-purple-400">
+          <div v-else class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            <div class="p-3 sm:p-4 bg-gray-50 dark:bg-slate-900/40 rounded-lg border border-gray-200 dark:border-slate-700">
+              <p class="text-[10px] sm:text-xs text-gray-500 dark:text-slate-400">Total Omzet</p>
+              <p class="text-sm sm:text-lg font-bold text-purple-600 dark:text-purple-400 truncate">
                 {{ formatRupiah(summary.omzetToday) }}
               </p>
             </div>
 
-            <div class="p-4 bg-gray-50 dark:bg-slate-900/40 rounded-lg border border-gray-200 dark:border-slate-700">
-              <p class="text-xs text-gray-500 dark:text-slate-400">Total Transaksi</p>
-              <p class="text-lg font-bold text-purple-600 dark:text-purple-400">
+            <div class="p-3 sm:p-4 bg-gray-50 dark:bg-slate-900/40 rounded-lg border border-gray-200 dark:border-slate-700">
+              <p class="text-[10px] sm:text-xs text-gray-500 dark:text-slate-400">Total Transaksi</p>
+              <p class="text-sm sm:text-lg font-bold text-purple-600 dark:text-purple-400">
                 {{ summary.totalTransactions }}
               </p>
             </div>
 
-            <div class="p-4 bg-gray-50 dark:bg-slate-900/40 rounded-lg border border-gray-200 dark:border-slate-700">
-              <p class="text-xs text-gray-500 dark:text-slate-400">Total Produk</p>
-              <p class="text-lg font-bold text-purple-600 dark:text-purple-400">
+            <div class="p-3 sm:p-4 bg-gray-50 dark:bg-slate-900/40 rounded-lg border border-gray-200 dark:border-slate-700">
+              <p class="text-[10px] sm:text-xs text-gray-500 dark:text-slate-400">Total Produk</p>
+              <p class="text-sm sm:text-lg font-bold text-purple-600 dark:text-purple-400">
                 {{ summary.uniqueProducts }}
               </p>
             </div>
 
-            <div class="p-4 bg-gray-50 dark:bg-slate-900/40 rounded-lg border border-gray-200 dark:border-slate-700">
-              <p class="text-xs text-gray-500 dark:text-slate-400">Total Pengeluaran</p>
-              <p class="text-lg font-bold text-purple-600 dark:text-purple-400">
+            <div class="p-3 sm:p-4 bg-gray-50 dark:bg-slate-900/40 rounded-lg border border-gray-200 dark:border-slate-700">
+              <p class="text-[10px] sm:text-xs text-gray-500 dark:text-slate-400">Total Pengeluaran</p>
+              <p class="text-sm sm:text-lg font-bold text-purple-600 dark:text-purple-400 truncate">
                 {{ formatRupiah(summary.totalExpenses) }}
               </p>
             </div>
           </div>
 
-          <p class="text-gray-600 dark:text-slate-400 text-sm leading-relaxed">
-            Laporan ini menampilkan total keseluruhan,data ini akan otomatis diperbarui setiap bulan.
+          <p class="text-gray-600 dark:text-slate-400 text-xs sm:text-sm leading-relaxed">
+            Laporan ini menampilkan total keseluruhan, data ini akan otomatis diperbarui setiap bulan.
           </p>
         </section>
 
         <!-- GRAFIK OMZET -->
-        <section class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl p-6 space-y-4 shadow-sm dark:shadow-none">
+        <section class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl p-4 sm:p-6 space-y-4 shadow-sm dark:shadow-none">
           <div class="flex items-center justify-between gap-2">
-            <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Grafik Omzet</h2>
-            <p class="text-xs text-gray-500 dark:text-slate-400">7 hari terakhir</p>
+            <h2 class="text-base sm:text-lg font-semibold text-slate-900 dark:text-white">Grafik Omzet</h2>
+            <p class="text-[10px] sm:text-xs text-gray-500 dark:text-slate-400">7 hari terakhir</p>
           </div>
 
           <!-- LOADING STATE -->
-          <div v-if="isLoadingChart" class="bg-gray-50 dark:bg-slate-900/60 border border-gray-200 dark:border-slate-700/80 rounded-lg p-8">
+          <div v-if="isLoadingChart" class="bg-gray-50 dark:bg-slate-900/60 border border-gray-200 dark:border-slate-700/80 rounded-lg p-4 sm:p-8">
             <div class="animate-pulse space-y-3">
-              <div class="h-4 bg-gray-200 dark:bg-slate-700 rounded w-3/4"></div>
-              <div class="h-4 bg-gray-200 dark:bg-slate-700 rounded w-1/2"></div>
-              <div class="h-4 bg-gray-200 dark:bg-slate-700 rounded w-5/6"></div>
+              <div class="h-3 sm:h-4 bg-gray-200 dark:bg-slate-700 rounded w-3/4"></div>
+              <div class="h-3 sm:h-4 bg-gray-200 dark:bg-slate-700 rounded w-1/2"></div>
+              <div class="h-3 sm:h-4 bg-gray-200 dark:bg-slate-700 rounded w-5/6"></div>
             </div>
           </div>
 
           <!-- CHART -->
-          <div v-else class="bg-gray-50 dark:bg-slate-900/60 border border-gray-200 dark:border-slate-700/80 rounded-lg p-4">
+          <div v-else class="bg-gray-50 dark:bg-slate-900/60 border border-gray-200 dark:border-slate-700/80 rounded-lg p-2 sm:p-4">
             <LineChart
               :labels="chartLabels"
               :data="chartData"
-              :height="250"
+              :height="200"
               label="Omzet Harian"
               :is-dark="isDark"
               border-color="rgb(147, 51, 234)"

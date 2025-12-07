@@ -11,37 +11,37 @@
     <!-- Theme Toggle Button -->
     <button
       @click="toggleTheme"
-      class="fixed bottom-6 right-6 z-50 group flex items-center gap-2 px-4 py-2.5 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer bg-slate-800/90 dark:bg-white/90 backdrop-blur-sm hover:scale-105 active:scale-95"
+      class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 group flex items-center gap-1.5 sm:gap-2 px-3 py-2 sm:px-4 sm:py-2.5 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer bg-slate-800/90 dark:bg-white/90 backdrop-blur-sm hover:scale-105 active:scale-95"
       :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
       :title="isDark ? 'Mode Terang' : 'Mode Gelap'"
     >
       <span
-        class="text-lg select-none transition-transform duration-300 group-hover:rotate-12"
+        class="text-base sm:text-lg select-none transition-transform duration-300 group-hover:rotate-12"
       >
         {{ isDark ? "☀️" : "🌙" }}
       </span>
       <span
-        class="text-sm font-medium text-white dark:text-slate-800 hidden sm:inline"
+        class="text-xs sm:text-sm font-medium text-white dark:text-slate-800 hidden sm:inline"
       >
         {{ isDark ? "Terang" : "Gelap" }}
       </span>
     </button>
 
-    <main class="flex-1 px-4 py-6 sm:px-6 lg:px-10 lg:pl-10">
-      <div class="w-full space-y-8">
+    <main class="flex-1 px-3 pt-14 pb-6 sm:px-6 sm:pt-6 lg:px-10 lg:pl-10 lg:pt-6 overflow-x-hidden">
+      <div class="w-full max-w-7xl mx-auto space-y-6 sm:space-y-8">
         <!-- Header -->
-        <header class="flex items-center justify-between">
+        <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div class="flex items-center gap-3">
             <div
-              class="w-10 h-10 rounded-2xl bg-purple-600/20 flex items-center justify-center text-2xl"
+              class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-purple-600/20 flex items-center justify-center text-xl sm:text-2xl"
             >
               🤖
             </div>
             <div>
-              <h1 class="text-3xl font-bold text-slate-900 dark:text-white">
+              <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white">
                 AI Asisten
               </h1>
-              <p class="text-gray-600 dark:text-gray-400 mt-1 text-sm">
+              <p class="text-gray-600 dark:text-gray-400 mt-1 text-xs sm:text-sm">
                 Dapatkan rekomendasi harga optimal berdasarkan data penjualan
                 dan kompetitor.
               </p>
