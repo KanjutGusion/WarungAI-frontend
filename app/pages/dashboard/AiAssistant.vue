@@ -60,13 +60,12 @@
               <h2
                 class="text-base font-semibold text-slate-900 dark:text-white"
               >
-                Dapatkan Produk Dengan Harga Optimal
+              Atur Margin Untuk Product Anda & Dapatkan Harga Terbaik
               </h2>
               <p
                 class="text-xs text-gray-500 dark:text-slate-400 mt-1 max-w-md"
               >
-                Isi target margin. AI akan membantu memberikan rekomendasi
-                produk, harga, alasan, dan analisis kompetitor.
+              Tentukan margin yang Anda inginkan. AI akan menghitung harga optimal beserta alasannya.
               </p>
             </div>
           </div>
@@ -103,14 +102,7 @@
                 </button>
               </div>
 
-              <div class="flex items-center justify-between pt-2">
-                <p
-                  class="text-[11px] text-gray-500 dark:text-slate-500 max-w-xs"
-                >
-                  Tolong isi target margin. agar kami bisa membantu rekomendasi
-                  product agar lebih akurat.
-                </p>
-              </div>
+             
 
               <p v-if="errorRecommend" class="text-xs text-red-400">
                 {{ errorRecommend }}
@@ -231,13 +223,13 @@
               <h2
                 class="text-base font-semibold text-slate-900 dark:text-white"
               >
-                Dapatkan Harga Optimal
+                Dapatkan Harga Optimal Dari Produk Anda
               </h2>
               <p
                 class="text-xs text-gray-500 dark:text-slate-400 mt-1 max-w-md"
               >
-                Isi data produk dan harga saat ini. AI akan membantu memberikan
-                rekomendasi harga, dan alasan.
+                Pilih data produk anda dan margin yang diinginkan. AI akan
+                membantu memberikan rekomendasi harga, dan alasan.
               </p>
             </div>
           </div>
@@ -250,12 +242,21 @@
                 <label class="text-xs text-gray-600 dark:text-slate-300"
                   >Nama produk</label
                 >
-                <input
+                <select
                   v-model="productName"
-                  type="text"
                   class="w-full rounded-xl bg-gray-50 dark:bg-slate-950/80 border border-gray-300 dark:border-slate-700 text-sm text-slate-900 dark:text-slate-100 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                  placeholder="Indomie"
-                />
+                  style="max-height: 160px; overflow-y: auto"
+                >
+                  <option disabled value="">Pilih produk…</option>
+
+                  <option
+                    v-for="(item, i) in productsName"
+                    :key="i"
+                    :value="item"
+                  >
+                    {{ item }}
+                  </option>
+                </select>
               </div>
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -273,12 +274,7 @@
                 </div>
               </div>
               <div class="flex items-center justify-between pt-2">
-                <p
-                  class="text-[11px] text-gray-500 dark:text-slate-500 max-w-xs"
-                >
-                  Minimal isi nama produk, dan target margin. Data kompetitor
-                  membantu agar rekomendasi lebih akurat.
-                </p>
+              
                 <button
                   class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-sm font-medium text-white transition disabled:opacity-50 disabled:cursor-not-allowed"
                   :disabled="!canSubmit || isLoading"
@@ -309,10 +305,7 @@
                     <LoadingDots />
                   </template>
 
-                  <template
-                    v-if="
-                      recommendationPriceByItemState"
-                  >
+                  <template v-if="recommendationPriceByItemState">
                     <div>
                       <div class="mb-2">
                         <p
@@ -323,7 +316,7 @@
                         <p
                           class="text-sm font-semibold text-slate-900 dark:text-white"
                         >
-                          {{ recommendationPriceByItemState.item_name ?? "-"  }}
+                          {{ recommendationPriceByItemState.item_name ?? "-" }}
                         </p>
                       </div>
 
@@ -340,8 +333,8 @@
                           {{
                             formatCurrency(
                               Number(
-                                recommendationPriceByItemState
-                                  .current_price ?? 0
+                                recommendationPriceByItemState.current_price ??
+                                  0
                               )
                             )
                           }}
@@ -361,8 +354,8 @@
                           {{
                             formatCurrency(
                               Number(
-                                recommendationPriceByItemState
-                                  .recommended_price ?? 0
+                                recommendationPriceByItemState.recommended_price ??
+                                  0
                               )
                             )
                           }}
@@ -371,7 +364,9 @@
                           class="text-[11px] text-gray-500 dark:text-slate-500 mt-1"
                         >
                           Target marginmu
-                          {{ recommendationPriceByItemState.expected_margin ?? 0 }}%
+                          {{
+                            recommendationPriceByItemState.expected_margin ?? 0
+                          }}%
                         </p>
                       </div>
 
@@ -391,7 +386,7 @@
                     </div>
                   </template>
 
-                  <template v-else>
+                  <template v-else-if="recommendationPriceByItemState == null && !isLoading">
                     <p class="text-gray-500 dark:text-slate-500 text-xs">
                       Belum ada analisis.
                     </p>
@@ -424,7 +419,7 @@ const {
   recommendationPriceState,
   recommendationPriceByItemState,
 } = useRecommendation();
-
+const { getTopItems } = useAnalytics();
 // -----------------------------
 // Theme
 // -----------------------------
@@ -472,7 +467,7 @@ const requestRecommendationPriceByProduct = async () => {
 
   isLoading.value = true;
   error.value = "";
-  recommendationPriceByItemState.value = null
+  recommendationPriceByItemState.value = null;
   try {
     // const result = await recommendationPrice(marginPercent.value!);
     const result = await recommendationPriceByItem(
@@ -490,12 +485,13 @@ const requestRecommendationPriceByProduct = async () => {
     isLoading.value = false;
   }
 };
+
 const requestRecommendationProduct = async () => {
   if (!canSubmitRecommendedProduct.value) return;
 
   isLoadingRecommend.value = true;
   errorRecommend.value = "";
-  recommendationPriceState.value = []
+  recommendationPriceState.value = [];
   try {
     // const result = await recommendationPrice(marginPercent.value!);
     const result = await recommendationPrice(
@@ -520,4 +516,14 @@ const formatCurrency = (value: number) => {
     currency: "IDR",
   }).format(value);
 };
+const productsName = ref<string[]>([]);
+
+onMounted(async () => {
+  const result = await getTopItems();
+
+  // Pastikan result itu array
+  if (Array.isArray(result)) {
+    productsName.value = result.map((item) => item.name);
+  }
+});
 </script>

@@ -51,7 +51,6 @@ export function useFinanceReport() {
       error.value = null
 
       const token = useCookie('auth_token', { path: '/' })
-
       // Fetch dari Analytics API
       const salesSummary = await api.get<{
         total_sales: number
@@ -59,12 +58,12 @@ export function useFinanceReport() {
         avg_profit_margin: number
         transaction_count: number
         avg_transaction_value: number
-      }>('/analytics/sales-summary', {
+      }>(`/analytics/sales-summary`, {
         headers: {
           Authorization: `Bearer ${token.value}`,
         },
       })
-
+      console.log(salesSummary)
       // Map data dari API ke format summary
       summary.value = {
         omzetToday: salesSummary.total_sales || 0,
