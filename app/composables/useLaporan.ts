@@ -59,7 +59,7 @@ export function useFinanceReport() {
         avg_profit_margin: number
         transaction_count: number
         avg_transaction_value: number
-      }>('/analytics/sales-summary', {
+      }>(`/analytics/sales-summary`, {
         headers: {
           Authorization: `Bearer ${token.value}`,
         },

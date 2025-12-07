@@ -1,6 +1,8 @@
 <!-- pages/dashboard/Laporan.vue -->
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 flex transition-colors duration-300">
+  <div
+    class="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 flex transition-colors duration-300"
+  >
     <!-- SIDEBAR -->
     <DashboardSidebar />
 
@@ -43,8 +45,7 @@
         <!-- ERROR HANDLER -->
         <div
           v-if="error"
-          class="rounded-lg border border-red-500/40 bg-red-500/10 text-red-700 dark:text-red-200
-                 text-sm px-4 py-3 flex items-start gap-2"
+          class="rounded-lg border border-red-500/40 bg-red-500/10 text-red-700 dark:text-red-200 text-sm px-4 py-3 flex items-start gap-2"
         >
           <span class="mt-0.5">⚠️</span>
           <div>
@@ -108,7 +109,7 @@
           </div>
 
           <p class="text-gray-600 dark:text-slate-400 text-xs sm:text-sm leading-relaxed">
-            Laporan ini menampilkan total keseluruhan, data ini akan otomatis diperbarui setiap bulan.
+            Laporan ini menampilkan total keseluruhan, data ini akan otomatis diperbarui setiap anda mengupload nota transaksi.
           </p>
         </section>
 
@@ -146,66 +147,64 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref, computed } from 'vue'
-import DashboardSidebar from '@/components/layout/Sidebar.vue'
-import LineChart from '@/components/charts/LineChart.vue'
-import { useFinanceReport } from '~/composables/usaLaporan'
-import { useAnalytics } from '~/composables/useAnalytics'
+import { onMounted, ref, computed } from "vue";
+import DashboardSidebar from "@/components/layout/Sidebar.vue";
+import LineChart from "@/components/charts/LineChart.vue";
+import { useFinanceReport } from "~/composables/useLaporan";
+import { useAnalytics } from "~/composables/useAnalytics";
 
-const { isDark, toggleTheme } = useTheme()
+const { isDark, toggleTheme } = useTheme();
 
 // Legacy finance report (untuk summary data)
-const {
-  isLoading,
-  error,
-  summary,
-  formatRupiah,
-  loadReport,
-} = useFinanceReport()
+const { isLoading, error, summary, formatRupiah, loadReport } =
+  useFinanceReport();
+console.log(summary.value);
 
 // Analytics API untuk chart
-const analytics = useAnalytics()
-const isLoadingChart = ref(false)
-const dailySales = ref<Array<{ date: string; total_sales: number; transaction_count: number }>>([])
+const analytics = useAnalytics();
+const isLoadingChart = ref(false);
+const dailySales = ref<
+  Array<{ date: string; total_sales: number; transaction_count: number }>
+>([]);
 
 // Chart data computed
 const chartLabels = computed(() => {
   if (!dailySales.value.length) {
-    return ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min']
+    return ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"];
   }
-  
-  return dailySales.value.map(day => {
-    const date = new Date(day.date)
-    const days = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab']
-    return days[date.getDay()]
-  })
-})
+
+  return dailySales.value.map((day) => {
+    const date = new Date(day.date);
+    const days = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
+    return days[date.getDay()];
+  });
+});
 
 const chartData = computed(() => {
   if (!dailySales.value.length) {
     // Dummy data jika belum ada data dari API
-    return [800000, 650000, 900000, 1200000, 1500000, 1100000, 1300000]
+    return [800000, 650000, 900000, 1200000, 1500000, 1100000, 1300000];
   }
-  
-  return dailySales.value.map(day => day.total_sales)
-})
+
+  return dailySales.value.map((day) => day.total_sales);
+});
 
 // Load chart data
 const loadChartData = async () => {
   try {
-    isLoadingChart.value = true
-    const data = await analytics.getDailySales(7)
-    dailySales.value = data
+    isLoadingChart.value = true;
+    const data = await analytics.getDailySales(7);
+    dailySales.value = data;
   } catch (err) {
-    console.error('Failed to load chart data:', err)
+    console.error("Failed to load chart data:", err);
     // Keep using dummy data on error
   } finally {
-    isLoadingChart.value = false
+    isLoadingChart.value = false;
   }
-}
+};
 
 onMounted(() => {
-  loadReport()
-  loadChartData()
-})
+  loadReport();
+  loadChartData();
+});
 </script>

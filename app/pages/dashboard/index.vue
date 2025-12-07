@@ -43,11 +43,37 @@
             </p>
           </div>
 
-          <span
-            class="text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-300 border border-gray-300 dark:border-slate-700 px-2 sm:px-3 py-1 rounded-full bg-white dark:bg-slate-800/50 w-fit"
-          >
-            {{ todayLabel }}
-          </span>
+          <div class="flex items-center gap-3 sm:gap-5 flex-wrap">
+            <!-- Label Tanggal -->
+            <span
+              class="text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-300 border border-gray-300 dark:border-slate-700 px-2 sm:px-3 py-1 rounded-full bg-white dark:bg-slate-800/50 w-fit"
+            >
+              {{ todayLabel }}
+            </span>
+
+            <!-- Tombol Export -->
+            <button
+              @click="exportPdf()"
+              class="flex items-center gap-2 px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded-lg border border-purple-500 text-purple-600 dark:text-purple-300 bg-white dark:bg-slate-900 hover:bg-purple-50 dark:hover:bg-slate-800 transition"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 4v12m0 0l-4-4m4 4l4-4M6 20h12"
+                />
+              </svg>
+              <span class="hidden sm:inline">Export PDF</span>
+              <span class="sm:hidden">Export</span>
+            </button>
+          </div>
         </header>
 
         <!-- Stat cards -->
@@ -86,10 +112,11 @@ import { useAnalytics } from "@/composables/useAnalytics";
 const { user } = useAuth();
 const { isDark, toggleTheme } = useTheme();
 
+
 const { ocrRows, todayLabel, formatRupiah, updateOcrData } =
   useDashboardOverview();
 
-const { getSalesSummary } = useAnalytics();
+const { getSalesSummary,exportPdf } = useAnalytics();
 
 const stats = ref<Stat[]>([
   { icon: "💰", value: "Rp 0", label: "Pendapatan Total" },
@@ -108,7 +135,7 @@ onMounted(async () => {
     stats.value[2].value = formatRupiah(d.total_profit);
     stats.value[3].value = d.avg_profit_margin + "%";
   } else {
-    stats.value[0].value = formatRupiah(0)
+    stats.value[0].value = formatRupiah(0);
     stats.value[1].value = "0";
     stats.value[2].value = formatRupiah(0);
     stats.value[3].value = "0" + "%";
