@@ -1,23 +1,26 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 flex transition-colors duration-300">
+  <div
+    class="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 flex transition-colors duration-300"
+  >
     <!-- SIDEBAR -->
     <DashboardSidebar />
 
     <!-- Theme Toggle Button -->
     <button
       @click="toggleTheme"
-      class="fixed bottom-6 right-6 z-50 group flex items-center gap-2 px-4 py-2.5 rounded-full 
-             shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer
-             bg-slate-800/90 dark:bg-white/90 backdrop-blur-sm
-             hover:scale-105 active:scale-95"
+      class="fixed bottom-6 right-6 z-50 group flex items-center gap-2 px-4 py-2.5 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer bg-slate-800/90 dark:bg-white/90 backdrop-blur-sm hover:scale-105 active:scale-95"
       :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
       :title="isDark ? 'Mode Terang' : 'Mode Gelap'"
     >
-      <span class="text-lg select-none transition-transform duration-300 group-hover:rotate-12">
-        {{ isDark ? '☀️' : '🌙' }}
+      <span
+        class="text-lg select-none transition-transform duration-300 group-hover:rotate-12"
+      >
+        {{ isDark ? "☀️" : "🌙" }}
       </span>
-      <span class="text-sm font-medium text-white dark:text-slate-800 hidden sm:inline">
-        {{ isDark ? 'Terang' : 'Gelap' }}
+      <span
+        class="text-sm font-medium text-white dark:text-slate-800 hidden sm:inline"
+      >
+        {{ isDark ? "Terang" : "Gelap" }}
       </span>
     </button>
 
@@ -26,74 +29,258 @@
         <!-- Header -->
         <header class="flex items-center justify-between">
           <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-2xl bg-purple-600/20 flex items-center justify-center text-2xl">
+            <div
+              class="w-10 h-10 rounded-2xl bg-purple-600/20 flex items-center justify-center text-2xl"
+            >
               🤖
             </div>
             <div>
-              <h1 class="text-3xl font-bold text-slate-900 dark:text-white">AI Asisten</h1>
+              <h1 class="text-3xl font-bold text-slate-900 dark:text-white">
+                AI Asisten
+              </h1>
               <p class="text-gray-600 dark:text-gray-400 mt-1 text-sm">
-                Dapatkan rekomendasi harga optimal berdasarkan data penjualan dan kompetitor.
+                Dapatkan rekomendasi harga optimal berdasarkan data penjualan
+                dan kompetitor.
               </p>
             </div>
           </div>
         </header>
 
         <!-- Main content -->
-        <section class="bg-white dark:bg-slate-900/80 border border-gray-200 dark:border-white/5 rounded-2xl p-6 shadow-lg dark:shadow-xl space-y-5">
-          <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+        <section
+          class="bg-white dark:bg-slate-900/80 border border-gray-200 dark:border-white/5 rounded-2xl p-6 shadow-lg dark:shadow-xl space-y-5"
+        >
+          <div
+            class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between"
+          >
             <div>
-              <h2 class="text-base font-semibold text-slate-900 dark:text-white">
-                Dapatkan Harga Optimal
+              <h2
+                class="text-base font-semibold text-slate-900 dark:text-white"
+              >
+                Dapatkan Produk Dengan Harga Optimal
               </h2>
-              <p class="text-xs text-gray-500 dark:text-slate-400 mt-1 max-w-md">
-                Isi data produk dan harga saat ini. AI akan membantu memberikan rekomendasi harga,
-                alasan, dan analisis kompetitor.
+              <p
+                class="text-xs text-gray-500 dark:text-slate-400 mt-1 max-w-md"
+              >
+                Isi target margin. AI akan membantu memberikan rekomendasi
+                produk, harga, alasan, dan analisis kompetitor.
               </p>
             </div>
           </div>
 
           <!-- layout -->
           <div class="grid grid-cols-1 lg:grid-cols-[1.7fr,2fr] gap-6">
+            <!-- Form input -->
+            <div class="space-y-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="space-y-1">
+                  <label class="text-xs text-gray-600 dark:text-slate-300">
+                    Target margin (%)
+                  </label>
+                  <input
+                    v-model.number="marginForRecommendedProduct"
+                    type="number"
+                    min="0"
+                    class="w-full rounded-xl bg-gray-50 dark:bg-slate-950/80 border border-gray-300 dark:border-slate-700 text-sm text-slate-900 dark:text-slate-100 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    placeholder="20"
+                  />
+                </div>
+              </div>
+
+              <div class="pt-2">
+                <button
+                  class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-sm font-medium text-white transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  :disabled="!canSubmitRecommendedProduct || isLoadingRecommend"
+                  @click="requestRecommendationProduct"
+                >
+                  <span v-if="!isLoadingRecommend">Dapatkan harga optimal</span>
+                  <span v-else class="flex items-center gap-2">
+                    <LoadingDots />
+                  </span>
+                </button>
+              </div>
+
+              <div class="flex items-center justify-between pt-2">
+                <p
+                  class="text-[11px] text-gray-500 dark:text-slate-500 max-w-xs"
+                >
+                  Tolong isi target margin. agar kami bisa membantu rekomendasi
+                  product agar lebih akurat.
+                </p>
+              </div>
+
+              <p v-if="errorRecommend" class="text-xs text-red-400">
+                {{ errorRecommend }}
+              </p>
+            </div>
+
+            <!-- Output rekomendasi -->
+            <div class="space-y-3">
+              <div
+                class="min-h-[220px] rounded-xl bg-gray-50 dark:bg-slate-950/80 border border-gray-200 dark:border-slate-700 px-4 py-4 text-sm text-slate-900 dark:text-slate-100 flex flex-col justify-between"
+              >
+                <div class="space-y-4">
+                  <template v-if="isLoadingRecommend">
+                    <p class="text-xs text-gray-500 dark:text-slate-400 mb-1">
+                      Menganalisis harga dan produk terbaik...
+                    </p>
+                    <LoadingDots />
+                  </template>
+
+                  <template
+                    v-else-if="
+                      recommendationPriceState &&
+                      recommendationPriceState.length > 0
+                    "
+                  >
+                    <div
+                      v-for="(product, index) in recommendationPriceState"
+                      :key="index"
+                      class="mb-4"
+                    >
+                      <!-- Harga rekomendasi -->
+                      <div class="mb-2">
+                        <p
+                          class="text-[11px] uppercase tracking-wide text-gray-500 dark:text-slate-400"
+                        >
+                          Produk
+                        </p>
+                        <p
+                          class="text-sm font-semibold text-slate-900 dark:text-white"
+                        >
+                          {{ product.item_name }}
+                        </p>
+                      </div>
+
+                      <!-- Harga saat ini -->
+                      <div class="mb-2">
+                        <p
+                          class="text-[11px] uppercase tracking-wide text-gray-500 dark:text-slate-400"
+                        >
+                          Harga saat ini
+                        </p>
+                        <p
+                          class="text-lg font-medium text-gray-700 dark:text-gray-200"
+                        >
+                          {{ formatCurrency(product.current_price ?? 0) }}
+                        </p>
+                      </div>
+
+                      <!-- Harga rekomendasi -->
+                      <div class="mb-2">
+                        <p
+                          class="text-[11px] uppercase tracking-wide text-gray-500 dark:text-slate-400"
+                        >
+                          Harga rekomendasi
+                        </p>
+                        <p
+                          class="text-2xl font-semibold text-emerald-600 dark:text-emerald-400"
+                        >
+                          {{ formatCurrency(product.recommended_price ?? 0) }}
+                        </p>
+                        <p
+                          class="text-[11px] text-gray-500 dark:text-slate-500 mt-1"
+                        >
+                          Target marginmu {{ product.expected_margin ?? 0 }}%
+                        </p>
+                      </div>
+
+                      <!-- Alasan -->
+                      <div>
+                        <p
+                          class="text-[11px] uppercase tracking-wide text-gray-500 dark:text-slate-400 mb-1"
+                        >
+                          Alasan
+                        </p>
+                        <p
+                          class="text-xs text-slate-700 dark:text-slate-100 leading-relaxed"
+                        >
+                          {{ product.reasoning }}
+                        </p>
+                      </div>
+                    </div>
+                  </template>
+
+                  <template v-else>
+                    <p class="text-gray-500 dark:text-slate-500 text-xs">
+                      Belum ada analisis.
+                    </p>
+                    <ul
+                      class="mt-3 text-xs text-gray-500 dark:text-slate-400 list-disc list-inside space-y-1"
+                    >
+                      <li>Harga rekomendasi yang tetap untung.</li>
+                      <li>Margin rekomendasi.</li>
+                      <li>Alasan.</li>
+                    </ul>
+                  </template>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section
+          class="bg-white dark:bg-slate-900/80 border border-gray-200 dark:border-white/5 rounded-2xl p-6 shadow-lg dark:shadow-xl space-y-5"
+        >
+          <div
+            class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between"
+          >
+            <div>
+              <h2
+                class="text-base font-semibold text-slate-900 dark:text-white"
+              >
+                Dapatkan Harga Optimal
+              </h2>
+              <p
+                class="text-xs text-gray-500 dark:text-slate-400 mt-1 max-w-md"
+              >
+                Isi data produk dan harga saat ini. AI akan membantu memberikan
+                rekomendasi harga, dan alasan.
+              </p>
+            </div>
+          </div>
+
+          <!-- layout -->
+          <div class="grid grid-cols-1 lg:grid-cols-[1.7fr,2fr] gap-6">
+            <!-- Form input -->
             <div class="space-y-4">
               <div class="space-y-1">
-                <label class="text-xs text-gray-600 dark:text-slate-300">Nama produk</label>
-                <input v-model="productName" type="text"
+                <label class="text-xs text-gray-600 dark:text-slate-300"
+                  >Nama produk</label
+                >
+                <input
+                  v-model="productName"
+                  type="text"
                   class="w-full rounded-xl bg-gray-50 dark:bg-slate-950/80 border border-gray-300 dark:border-slate-700 text-sm text-slate-900 dark:text-slate-100 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                  placeholder=" Indomie" />
+                  placeholder="Indomie"
+                />
               </div>
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="space-y-1">
-                  <label class="text-xs text-gray-600 dark:text-slate-300">Harga jual saat ini (Rp)</label>
-                  <input v-model.number="currentPrice" type="number" min="0"
+                  <label class="text-xs text-gray-600 dark:text-slate-300">
+                    Target margin (%)
+                  </label>
+                  <input
+                    v-model.number="marginPercent"
+                    type="number"
+                    min="0"
                     class="w-full rounded-xl bg-gray-50 dark:bg-slate-950/80 border border-gray-300 dark:border-slate-700 text-sm text-slate-900 dark:text-slate-100 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                    placeholder="3500" />
-                </div>
-                <div class="space-y-1">
-                  <label class="text-xs text-gray-600 dark:text-slate-300">Harga modal / pokok (Rp)</label>
-                  <input v-model.number="costPrice" type="number" min="0"
-                    class="w-full rounded-xl bg-gray-50 dark:bg-slate-950/80 border border-gray-300 dark:border-slate-700 text-sm text-slate-900 dark:text-slate-100 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                    placeholder=" 2500" />
+                    placeholder="20"
+                  />
                 </div>
               </div>
-
-              <div class="space-y-1">
-                <label class="text-xs text-gray-600 dark:text-slate-300">
-                  Perkiraan harga kompetitor (Rp)
-                </label>
-                <input v-model.number="competitorPrice" type="number" min="0"
-                  class="w-full rounded-xl bg-gray-50 dark:bg-slate-950/80 border border-gray-300 dark:border-slate-700 text-sm text-slate-900 dark:text-slate-100 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                  placeholder=" 4000" />
-              </div>
-
               <div class="flex items-center justify-between pt-2">
-                <p class="text-[11px] text-gray-500 dark:text-slate-500 max-w-xs">
-                  Minimal isi nama produk, harga jual, dan harga modal. Data kompetitor membantu agar
-                  rekomendasi lebih akurat.
+                <p
+                  class="text-[11px] text-gray-500 dark:text-slate-500 max-w-xs"
+                >
+                  Minimal isi nama produk, dan target margin. Data kompetitor
+                  membantu agar rekomendasi lebih akurat.
                 </p>
                 <button
                   class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-sm font-medium text-white transition disabled:opacity-50 disabled:cursor-not-allowed"
-                  :disabled="!canSubmit || isLoading" @click="requestRecommendation">
+                  :disabled="!canSubmit || isLoading"
+                  @click="requestRecommendationPriceByProduct"
+                >
                   <span v-if="!isLoading">Dapatkan harga optimal</span>
                   <span v-else class="flex items-center gap-2">
                     <LoadingDots />
@@ -106,50 +293,98 @@
               </p>
             </div>
 
-            <!--  Output  -->
+            <!-- Output rekomendasi -->
             <div class="space-y-3">
               <div
-                class="min-h-[220px] rounded-xl bg-gray-50 dark:bg-slate-950/80 border border-gray-200 dark:border-slate-700 px-4 py-4 text-sm text-slate-900 dark:text-slate-100 flex flex-col justify-between">
+                class="min-h-[220px] rounded-xl bg-gray-50 dark:bg-slate-950/80 border border-gray-200 dark:border-slate-700 px-4 py-4 text-sm text-slate-900 dark:text-slate-100 flex flex-col justify-between"
+              >
                 <div class="space-y-4">
                   <template v-if="isLoading">
                     <p class="text-xs text-gray-500 dark:text-slate-400 mb-1">
-                      Menganalisis harga dan data kompetitor…
+                      Menganalisis harga terbaik…
                     </p>
                     <LoadingDots />
                   </template>
 
-                  <template v-else-if="pricingResult">
-                    <!-- harga rekomendasi -->
+                  <template
+                    v-if="
+                      recommendationPriceByItemState"
+                  >
                     <div>
-                      <p class="text-[11px] uppercase tracking-wide text-gray-500 dark:text-slate-400 mb-1">
-                        Harga rekomendasi
-                      </p>
-                      <p class="text-2xl font-semibold text-emerald-600 dark:text-emerald-400">
-                        {{ formatCurrency(pricingResult.recommendedPrice) }}
-                      </p>
-                      <p class="text-[11px] text-gray-500 dark:text-slate-500 mt-1">
-                       harga rekomendasi {{ pricingResult.estimatedMargin }}%
-                      </p>
-                    </div>
+                      <div class="mb-2">
+                        <p
+                          class="text-[11px] uppercase tracking-wide text-gray-500 dark:text-slate-400"
+                        >
+                          Produk
+                        </p>
+                        <p
+                          class="text-sm font-semibold text-slate-900 dark:text-white"
+                        >
+                          {{ recommendationPriceByItemState.item_name ?? "-"  }}
+                        </p>
+                      </div>
 
-                    <!-- alasan -->
-                    <div>
-                      <p class="text-[11px] uppercase tracking-wide text-gray-500 dark:text-slate-400 mb-1">
-                        Alasan
-                      </p>
-                      <p class="text-xs text-slate-700 dark:text-slate-100 leading-relaxed">
-                        {{ pricingResult.reason }}
-                      </p>
-                    </div>
+                      <!-- Harga saat ini -->
+                      <div class="mb-2">
+                        <p
+                          class="text-[11px] uppercase tracking-wide text-gray-500 dark:text-slate-400"
+                        >
+                          Harga saat ini
+                        </p>
+                        <p
+                          class="text-lg font-medium text-gray-700 dark:text-gray-200"
+                        >
+                          {{
+                            formatCurrency(
+                              Number(
+                                recommendationPriceByItemState
+                                  .current_price ?? 0
+                              )
+                            )
+                          }}
+                        </p>
+                      </div>
 
-                    <!-- analisis kompetitor -->
-                    <div>
-                      <p class="text-[11px] uppercase tracking-wide text-gray-500 dark:text-slate-400 mb-1">
-                        Analisis kompetitor
-                      </p>
-                      <p class="text-xs text-slate-700 dark:text-slate-100 leading-relaxed">
-                        {{ pricingResult.competitorAnalysis }}
-                      </p>
+                      <!-- Harga rekomendasi -->
+                      <div class="mb-2">
+                        <p
+                          class="text-[11px] uppercase tracking-wide text-gray-500 dark:text-slate-400"
+                        >
+                          Harga rekomendasi
+                        </p>
+                        <p
+                          class="text-2xl font-semibold text-emerald-600 dark:text-emerald-400"
+                        >
+                          {{
+                            formatCurrency(
+                              Number(
+                                recommendationPriceByItemState
+                                  .recommended_price ?? 0
+                              )
+                            )
+                          }}
+                        </p>
+                        <p
+                          class="text-[11px] text-gray-500 dark:text-slate-500 mt-1"
+                        >
+                          Target marginmu
+                          {{ recommendationPriceByItemState.expected_margin ?? 0 }}%
+                        </p>
+                      </div>
+
+                      <!-- Alasan -->
+                      <div>
+                        <p
+                          class="text-[11px] uppercase tracking-wide text-gray-500 dark:text-slate-400 mb-1"
+                        >
+                          Alasan
+                        </p>
+                        <p
+                          class="text-xs text-slate-700 dark:text-slate-100 leading-relaxed"
+                        >
+                          {{ recommendationPriceByItemState.reasoning ?? "-" }}
+                        </p>
+                      </div>
                     </div>
                   </template>
 
@@ -157,10 +392,12 @@
                     <p class="text-gray-500 dark:text-slate-500 text-xs">
                       Belum ada analisis.
                     </p>
-                    <ul class="mt-3 text-xs text-gray-500 dark:text-slate-400 list-disc list-inside space-y-1">
+                    <ul
+                      class="mt-3 text-xs text-gray-500 dark:text-slate-400 list-disc list-inside space-y-1"
+                    >
                       <li>Harga rekomendasi yang tetap untung.</li>
-                      <li>margin rekomendasi.</li>
-                      <li>saran promo.</li>
+                      <li>Margin rekomendasi.</li>
+                      <li>Alasan promo.</li>
                     </ul>
                   </template>
                 </div>
@@ -172,11 +409,112 @@
     </main>
   </div>
 </template>
+<script setup lang="ts">
+import { ref, computed } from "vue";
+import DashboardSidebar from "~/components/layout/Sidebar.vue";
+import LoadingDots from "~/components/ui/LoadingDots.vue";
+import { useRecommendation } from "~/composables/useRecommendation";
+import { useTheme } from "~/composables/useTheme.ts";
+const {
+  recommendationPriceByItem,
+  recommendationPrice,
+  recommendationPriceState,
+  recommendationPriceByItemState,
+} = useRecommendation();
 
-<script setup>
-import { ref, computed } from 'vue'
-import DashboardSidebar from '~/components/layout/Sidebar.vue'
-import LoadingDots from '~/components/ui/LoadingDots.vue'
+// -----------------------------
+// Theme
+// -----------------------------
+const { isDark, toggleTheme } = useTheme();
 
-const { isDark, toggleTheme } = useTheme()
+// -----------------------------
+// Form State
+// -----------------------------
+const productName = ref("");
+const marginPercent = ref<number | null>(null);
+const marginForRecommendedProduct = ref<number | null>(null);
+
+// -----------------------------
+// Result & UI State
+// -----------------------------
+const isLoading = ref(false);
+const error = ref("");
+
+const isLoadingRecommend = ref(false);
+const errorRecommend = ref("");
+
+// -----------------------------
+// Computed
+// -----------------------------
+const canSubmit = computed(() => {
+  return (
+    productName.value.trim() !== "" &&
+    marginPercent.value !== null &&
+    marginPercent.value >= 0
+  );
+});
+
+const canSubmitRecommendedProduct = computed(() => {
+  return (
+    marginForRecommendedProduct.value !== null &&
+    marginForRecommendedProduct.value >= 0
+  );
+});
+
+// -----------------------------
+// Methods
+// -----------------------------
+const requestRecommendationPriceByProduct = async () => {
+  if (!canSubmit.value) return;
+
+  isLoading.value = true;
+  error.value = "";
+  recommendationPriceByItemState.value = null
+  try {
+    // const result = await recommendationPrice(marginPercent.value!);
+    const result = await recommendationPriceByItem(
+      productName.value,
+      marginPercent.value!
+    );
+    if (!result.success) {
+      error.value = result.error; // <-- assign error dari API
+      return;
+    }
+  } catch (err: any) {
+    console.log(err);
+    error.value = err.error || "Terjadi kesalahan";
+  } finally {
+    isLoading.value = false;
+  }
+};
+const requestRecommendationProduct = async () => {
+  if (!canSubmitRecommendedProduct.value) return;
+
+  isLoadingRecommend.value = true;
+  errorRecommend.value = "";
+  recommendationPriceState.value = []
+  try {
+    // const result = await recommendationPrice(marginPercent.value!);
+    const result = await recommendationPrice(
+      marginForRecommendedProduct.value!
+    );
+    if (!result.success) {
+      errorRecommend.value = result.error; // <-- assign error dari API
+      return;
+    }
+  } catch (err: any) {
+    errorRecommend.value = err.error || "Terjadi kesalahan";
+  } finally {
+    isLoadingRecommend.value = false;
+  }
+};
+// -----------------------------
+// Helper
+// -----------------------------
+const formatCurrency = (value: number) => {
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+  }).format(value);
+};
 </script>

@@ -31,8 +31,17 @@ export const useApi = () => {
   /**
    * GET request
    */
-  const get = <T>(endpoint: string, p0: { headers: { Authorization: string; }; }) => fetchApi<T>(endpoint, { method: "GET" });
-
+  const get = <T>(
+    endpoint: string,
+    options?: { headers?: Record<string, string> }
+  ) =>
+    fetchApi<T>(endpoint, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        ...options?.headers, // header tambahan
+      },
+    });
   /**
    * POST request
    */

@@ -76,7 +76,7 @@ services:
       - NODE_ENV=production
       - NUXT_HOST=0.0.0.0
       - NUXT_PORT=3000
-      - NUXT_PUBLIC_API_BASE={{API_BASE_URL}}
+      - NUXT_PUBLIC_API_BASE=${API_BASE_URL}
       - NUXT_PUBLIC_API_VERSION=v1
     restart: unless-stopped
 ```
@@ -120,6 +120,7 @@ API_BASE_URL=http://localhost:3001/api
 | `/` | Landing page |
 | `/auth/login` | Halaman login |
 | `/dashboard` | Dashboard utama |
+| `/dashboard/AiAssistant` | AiAssistant Price
 
 ## 🤝 Contributing
 
