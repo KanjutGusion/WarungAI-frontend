@@ -1,4 +1,7 @@
-//dummy
+/**
+ * Composable untuk Laporan Keuangan
+ * Fetch data dari Analytics API
+ */
 import { ref, computed } from 'vue'
 
 interface OmzetPoint {
@@ -14,6 +17,7 @@ interface FinanceSummary {
 }
 
 export function useFinanceReport() {
+  const api = useApi()
   const isLoading = ref(true)
   const error = ref<string | null>(null)
 
@@ -46,26 +50,40 @@ export function useFinanceReport() {
       isLoading.value = true
       error.value = null
 
-      await new Promise((r) => setTimeout(r, 600))
+      const token = useCookie('auth_token', { path: '/' })
 
+      // Fetch dari Analytics API
+      const salesSummary = await api.get<{
+        total_sales: number
+        total_profit: number
+        avg_profit_margin: number
+        transaction_count: number
+        avg_transaction_value: number
+      }>('/analytics/sales-summary', {
+        headers: {
+          Authorization: `Bearer ${token.value}`,
+        },
+      })
+
+      // Map data dari API ke format summary
       summary.value = {
-        omzetToday: 1250000,
-        totalTransactions: 32,
-        uniqueProducts: 18,
-        totalExpenses: 450000,
+        omzetToday: salesSummary.total_sales || 0,
+        totalTransactions: salesSummary.transaction_count || 0,
+        uniqueProducts: 0, // Will be filled by top-items endpoint if needed
+        totalExpenses: 0, // Calculate from profit if needed
       }
 
-      omzetSeries.value = [
-        { label: 'Sen', value: 800000 },
-        { label: 'Sel', value: 650000 },
-        { label: 'Rab', value: 900000 },
-        { label: 'Kam', value: 1200000 },
-        { label: 'Jum', value: 1500000 },
-        { label: 'Sab', value: 1100000 },
-        { label: 'Min', value: 1300000 },
-      ]
     } catch (err: any) {
       error.value = err?.message ?? 'Gagal memuat laporan.'
+      console.error('[FinanceReport] Error:', err)
+      
+      // Fallback to zero values on error
+      summary.value = {
+        omzetToday: 0,
+        totalTransactions: 0,
+        uniqueProducts: 0,
+        totalExpenses: 0,
+      }
     } finally {
       isLoading.value = false
     }
