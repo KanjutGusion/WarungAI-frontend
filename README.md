@@ -1,14 +1,14 @@
-# 🍜 WarungAI Frontend
+#  WarungAI Frontend
 
 Platform AI untuk membantu usaha warung dan UMKM Indonesia menjadi lebih cerdas dan efisien.
 
-## 📋 Tech Stack
+##  Tech Stack
 
 - **Framework:** [Nuxt 3](https://nuxt.com/)
 - **Styling:** [Tailwind CSS](https://tailwindcss.com/)
 - **Language:** TypeScript / Vue 3
 
-## 📁 Struktur Folder
+##  Struktur Folder
 
 ```
 app/
@@ -25,7 +25,7 @@ app/
 └── utils/           # Helper functions
 ```
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Prerequisites
 
@@ -48,7 +48,7 @@ npm run dev
 
 Buka [http://localhost:3000](http://localhost:3000) di browser.
 
-## 📜 Scripts
+##  Scripts
 
 | Command | Description |
 |---------|-------------|
@@ -57,7 +57,7 @@ Buka [http://localhost:3000](http://localhost:3000) di browser.
 | `npm run preview` | Preview production build |
 | `npm run generate` | Generate static site |
 
-## 🐳 Docker
+##  Docker
 
 ## Buat file compose.yml
 ```
@@ -105,7 +105,7 @@ docker-compose up -d --build
 docker-compose --profile dev up warungai-frontend-dev
 ```
 
-## 🌐 Environment Variables
+## Environment Variables
 
 Buat file `.env` berdasarkan `.env.example`:
 
@@ -113,7 +113,7 @@ Buat file `.env` berdasarkan `.env.example`:
 API_BASE_URL=http://localhost:3001/api
 ```
 
-## 📄 Halaman
+##  Halaman
 
 | Route | Description |
 |-------|-------------|
@@ -122,7 +122,7 @@ API_BASE_URL=http://localhost:3001/api
 | `/dashboard` | Dashboard utama |
 | `/dashboard/AiAssistant` | AiAssistant Price
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork repository
 2. Buat branch feature (`git checkout -b feature/AmazingFeature`)
@@ -130,7 +130,7 @@ API_BASE_URL=http://localhost:3001/api
 4. Push ke branch (`git push origin feature/AmazingFeature`)
 5. Buat Pull Request
 
-## 📝 License
+## License
 
 MIT License - Lihat [LICENSE](LICENSE) untuk detail.
 

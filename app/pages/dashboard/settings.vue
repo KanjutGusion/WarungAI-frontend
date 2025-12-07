@@ -3,6 +3,9 @@
         <!-- SIDEBAR -->
         <DashboardSidebar />
 
+    <!-- Burger Menu Button (Mobile) -->
+    <CommonBurgerButton />
+
         <!-- Theme Toggle Button -->
         <button
           @click="toggleTheme"
@@ -22,7 +25,7 @@
         </button>
 
         <!-- Area konten -->
-        <main class="flex-1 px-4 py-6 sm:px-6 lg:px-10">
+        <main class="flex-1 px-4 py-6 sm:px-6 lg:px-10 lg:pl-10">
             <div class="w-full space-y-8">
                 <header class="flex items-center justify-between">
                     <div class="flex items-center gap-3">

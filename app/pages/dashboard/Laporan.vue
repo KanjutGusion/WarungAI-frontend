@@ -4,6 +4,9 @@
     <!-- SIDEBAR -->
     <DashboardSidebar />
 
+    <!-- Burger Menu Button (Mobile) -->
+    <CommonBurgerButton />
+
     <!-- Theme Toggle Button -->
     <button
       @click="toggleTheme"
@@ -23,7 +26,7 @@
     </button>
 
     <!-- KONTEN  -->
-    <main class="flex-1 px-4 py-6 sm:px-6 lg:px-10">
+    <main class="flex-1 px-4 py-6 sm:px-6 lg:px-10 lg:pl-10">
       <div class="w-full space-y-8">
        <!-- Header -->
         <header class="flex items-center justify-between">
@@ -117,34 +120,26 @@
             <p class="text-xs text-gray-500 dark:text-slate-400">7 hari terakhir</p>
           </div>
 
-          <div class="bg-gray-50 dark:bg-slate-900/60 border border-gray-200 dark:border-slate-700/80 rounded-lg p-4">
-            <svg viewBox="0 0 200 60" class="w-full h-24">
-              <defs>
-                <linearGradient id="omzet-line" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stop-color="rgb(192,132,252)" />
-                  <stop offset="100%" stop-color="rgb(59,130,246)" />
-                </linearGradient>
-              </defs>
-
-              <path
-                :d="omzetPath"
-                fill="none"
-                stroke="url(#omzet-line)"
-                stroke-width="2.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-
-            <div class="flex justify-between mt-2 text-[10px] text-gray-500 dark:text-slate-400">
-              <span
-                v-for="point in omzetSeries"
-                :key="point.label"
-                class="uppercase tracking-tight"
-              >
-                {{ point.label }}
-              </span>
+          <!-- LOADING STATE -->
+          <div v-if="isLoadingChart" class="bg-gray-50 dark:bg-slate-900/60 border border-gray-200 dark:border-slate-700/80 rounded-lg p-8">
+            <div class="animate-pulse space-y-3">
+              <div class="h-4 bg-gray-200 dark:bg-slate-700 rounded w-3/4"></div>
+              <div class="h-4 bg-gray-200 dark:bg-slate-700 rounded w-1/2"></div>
+              <div class="h-4 bg-gray-200 dark:bg-slate-700 rounded w-5/6"></div>
             </div>
+          </div>
+
+          <!-- CHART -->
+          <div v-else class="bg-gray-50 dark:bg-slate-900/60 border border-gray-200 dark:border-slate-700/80 rounded-lg p-4">
+            <LineChart
+              :labels="chartLabels"
+              :data="chartData"
+              :height="250"
+              label="Omzet Harian"
+              :is-dark="isDark"
+              border-color="rgb(147, 51, 234)"
+              background-color="rgba(147, 51, 234, 0.1)"
+            />
           </div>
         </section>
       </div>
@@ -152,23 +147,66 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import DashboardSidebar from '@/components/layout/Sidebar.vue'
+import LineChart from '@/components/charts/LineChart.vue'
 import { useFinanceReport } from '~/composables/usaLaporan'
+import { useAnalytics } from '~/composables/useAnalytics'
 
 const { isDark, toggleTheme } = useTheme()
 
+// Legacy finance report (untuk summary data)
 const {
   isLoading,
   error,
   summary,
-  omzetSeries,
-  omzetPath,
   formatRupiah,
   loadReport,
 } = useFinanceReport()
 
+// Analytics API untuk chart
+const analytics = useAnalytics()
+const isLoadingChart = ref(false)
+const dailySales = ref<Array<{ date: string; total_sales: number; transaction_count: number }>>([])
+
+// Chart data computed
+const chartLabels = computed(() => {
+  if (!dailySales.value.length) {
+    return ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min']
+  }
+  
+  return dailySales.value.map(day => {
+    const date = new Date(day.date)
+    const days = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab']
+    return days[date.getDay()]
+  })
+})
+
+const chartData = computed(() => {
+  if (!dailySales.value.length) {
+    // Dummy data jika belum ada data dari API
+    return [800000, 650000, 900000, 1200000, 1500000, 1100000, 1300000]
+  }
+  
+  return dailySales.value.map(day => day.total_sales)
+})
+
+// Load chart data
+const loadChartData = async () => {
+  try {
+    isLoadingChart.value = true
+    const data = await analytics.getDailySales(7)
+    dailySales.value = data
+  } catch (err) {
+    console.error('Failed to load chart data:', err)
+    // Keep using dummy data on error
+  } finally {
+    isLoadingChart.value = false
+  }
+}
+
 onMounted(() => {
   loadReport()
+  loadChartData()
 })
 </script>

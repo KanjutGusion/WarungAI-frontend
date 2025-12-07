@@ -229,10 +229,10 @@
     <!-- ABOUT SECTION -->
     <SectionShell id="about" class="relative z-10">
       <div class="max-w-3xl mx-auto text-center">
-        <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-6
+        <div class="flex items-center justify-center w-full rounded-2xl mb-6 p-8
                     transition-colors duration-300"
              :class="isDark ? 'bg-purple-500/20' : 'bg-amber-100'">
-          <span class="text-3xl">🏪</span>
+          <img src="~/assets/images/logo_warung_Ai.png" alt="WarungAI Logo" class="w-32 h-32 object-contain" />
         </div>
         <h2 class="text-3xl md:text-4xl font-bold mb-6"
             :class="isDark ? 'text-white' : 'text-slate-900'">
