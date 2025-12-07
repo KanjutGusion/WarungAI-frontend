@@ -19,20 +19,6 @@
       {{ value }}
     </div>
 
-    <p
-      v-if="trend"
-      class="text-xs mt-2 flex items-center gap-1"
-      :class="trend.includes('baru') || trend.includes('Omzet')
-        ? 'text-emerald-600 dark:text-emerald-400'
-        : 'text-purple-600 dark:text-purple-300'"
-    >
-      <span v-if="label === 'Pendapatan Hari Ini'">
-        ↑ {{ trend }}
-      </span>
-      <span v-else>
-        * {{ trend }}
-      </span>
-    </p>
   </div>
 </template>
 

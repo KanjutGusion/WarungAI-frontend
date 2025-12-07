@@ -2,13 +2,13 @@
  * Middleware untuk proteksi halaman yang membutuhkan login
  */
 export default defineNuxtRouteMiddleware(async (to, from) => {
-  const { user, isLoggedIn,checkAuth } = useAuth();
-
+  const { user, isLoggedIn, checkAuth } = useAuth();
+  const token = useCookie("auth_token");
   const publicPages = ["/", "/auth/login", "/auth/register"];
 
   const authPages = ["/auth/login", "/auth/register"];
   // Halaman publik
-  if (authPages.includes(to.path) && isLoggedIn) {
+  if (authPages.includes(to.path) && isLoggedIn.value) {
     return navigateTo("/dashboard");
   }
 
@@ -17,11 +17,12 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     return;
   }
 
-  // Halaman private - cek token
-  if (!isLoggedIn || !user) {
-    const user = await checkAuth()
-    if (!user) {
-      return navigateTo("/auth/login");
-    }
+  if (!token.value) {
+    console.log("belum login");
+    return navigateTo("/auth/login");
+  }
+  
+  if (!user) {
+    return navigateTo("/auth/login");
   }
 });

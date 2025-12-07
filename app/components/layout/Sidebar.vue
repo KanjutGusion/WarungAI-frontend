@@ -231,7 +231,9 @@ const linkClass = (to: string) => {
 
 const handleNav = (item: NavItem) => {
   if (item.action === 'logout') {
+    console.log("Tes")
     logout()
+    checkAuth()
     // Close sidebar di mobile saja
     if (window.innerWidth < 1024) {
       closeSidebar()

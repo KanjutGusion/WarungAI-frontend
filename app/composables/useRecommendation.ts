@@ -20,9 +20,7 @@ export const useRecommendation = () => {
   const recommendationPrice = async (expectedMargin: number) => {
     try {
       const token = useCookie("auth_token", { path: "/" });
-      console.log(
-        `/pricing/recommendations?target_margin=${expectedMargin.toString()}`
-      );
+     
       const result = await api.get<RecommendationResponse[]>(
         `/pricing/recommendations?target_margin=${expectedMargin}`,
         {

@@ -2,85 +2,90 @@
  * Composable untuk Analytics API
  * Endpoint: /analytics dari backend
  */
-import { ref } from 'vue'
+import { ref } from "vue";
 
 // Types berdasarkan backend DTO
 export interface SalesSummary {
-  total_sales: number
-  total_profit: number
-  avg_profit_margin: number
-  transaction_count: number
-  avg_transaction_value: number
+  total_sales: number;
+  total_profit: number;
+  avg_profit_margin: number;
+  transaction_count: number;
+  avg_transaction_value: number;
 }
 
 export interface TopItem {
-  name: string
-  total_qty: number
-  total_revenue: number
-  frequency: number
+  name: string;
+  total_qty: number;
+  total_revenue: number;
+  frequency: number;
 }
 
 export interface RecentSale {
-  id: string
-  createdAt: Date
-  itemCount: number
-  totalAmount: number
-  profit: number
+  id: string;
+  createdAt: Date;
+  itemCount: number;
+  totalAmount: number;
+  profit: number;
   items: {
-    name: string
-    qty: number
-    subtotal: number
-  }[]
+    name: string;
+    qty: number;
+    subtotal: number;
+  }[];
 }
 
 export interface DailySales {
-  date: string
-  total_sales: number
-  transaction_count: number
+  date: string;
+  total_sales: number;
+  transaction_count: number;
 }
 
 export function useAnalytics() {
-  const config = useRuntimeConfig()
-  const baseURL = config.public.apiBase || 'http://localhost:8000'
-
-  const isLoading = ref(false)
-  const error = ref<string | null>(null)
-
+  const config = useRuntimeConfig();
+  const api = useApi();
+  const isLoading = ref(false);
+  const error = ref<string | null>(null);
+  const salesSummary = useState<SalesSummary | null>(
+    "sales-summary",
+    () => null
+  );
   /**
    * Get Sales Summary
    * GET /analytics/sales-summary
    */
-  async function getSalesSummary(startDate?: string, endDate?: string): Promise<SalesSummary | null> {
+  async function getSalesSummary(
+    startDate?: string,
+    endDate?: string
+  ): Promise<SalesSummary | null> {
     try {
-      isLoading.value = true
-      error.value = null
+      isLoading.value = true;
+      error.value = null;
 
-      const token = useCookie('auth_token')
-      const params = new URLSearchParams()
-      if (startDate) params.append('startDate', startDate)
-      if (endDate) params.append('endDate', endDate)
+      const token = useCookie("auth_token");
+      const params = new URLSearchParams();
+      if (startDate) params.append("startDate", startDate);
+      if (endDate) params.append("endDate", endDate);
 
-      const url = `${baseURL}/analytics/sales-summary${params.toString() ? '?' + params.toString() : ''}`
+      const query = params.toString() ? `?${params.toString()}` : "";
 
-      const response = await fetch(url, {
-        headers: {
-          'Authorization': `Bearer ${token.value}`,
-          'Content-Type': 'application/json',
-        },
-      })
+      // GET ke API menggunakan api.get
+      const result = await api.get<SalesSummary>(
+        `/analytics/sales-summary${query}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token.value}`,
+          },
+        }
+      );
 
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
-      }
-
-      const data: SalesSummary = await response.json()
-      return data
+      // Simpan state
+      salesSummary.value = result;
+      return result;
     } catch (err: any) {
-      error.value = err?.message || 'Gagal memuat ringkasan penjualan'
-      console.error('[Analytics] getSalesSummary error:', err)
-      return null
+      error.value = err?.message || "Gagal memuat ringkasan penjualan";
+      console.error("[Analytics] getSalesSummary error:", err);
+      return null;
     } finally {
-      isLoading.value = false
+      isLoading.value = false;
     }
   }
 
@@ -94,36 +99,31 @@ export function useAnalytics() {
     endDate?: string
   ): Promise<TopItem[]> {
     try {
-      isLoading.value = true
-      error.value = null
+      isLoading.value = true;
+      error.value = null;
+      const token = useCookie("auth_token", { path: "/" });
 
-      const token = useCookie('auth_token')
-      const params = new URLSearchParams()
-      params.append('limit', limit.toString())
-      if (startDate) params.append('startDate', startDate)
-      if (endDate) params.append('endDate', endDate)
+      const params = new URLSearchParams();
+      params.append("limit", limit.toString());
+      if (startDate) params.append("startDate", startDate);
+      if (endDate) params.append("endDate", endDate);
 
-      const url = `${baseURL}/analytics/top-items?${params.toString()}`
+      const query = params.toString() ? `?${params.toString()}` : "";
 
-      const response = await fetch(url, {
+      // API GET
+      const result = await api.get<TopItem[]>(`/analytics/top-items${query}`, {
         headers: {
-          'Authorization': `Bearer ${token.value}`,
-          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token.value}`,
         },
-      })
+      });
 
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
-      }
-
-      const data: TopItem[] = await response.json()
-      return data
+      return result;
     } catch (err: any) {
-      error.value = err?.message || 'Gagal memuat top items'
-      console.error('[Analytics] getTopItems error:', err)
-      return []
+      error.value = err?.message || "Gagal memuat top items";
+      console.error("[Analytics] getTopItems error:", err);
+      return [];
     } finally {
-      isLoading.value = false
+      isLoading.value = false;
     }
   }
 
@@ -133,34 +133,34 @@ export function useAnalytics() {
    */
   async function getRecentSales(limit: number = 10): Promise<RecentSale[]> {
     try {
-      isLoading.value = true
-      error.value = null
+      isLoading.value = true;
+      error.value = null;
 
-      const token = useCookie('auth_token')
-      const params = new URLSearchParams()
-      params.append('limit', limit.toString())
+      const token = useCookie("auth_token", { path: "/" });
 
-      const url = `${baseURL}/analytics/recent-sales?${params.toString()}`
+      // Build query params
+      const params = new URLSearchParams();
+      params.append("limit", limit.toString());
 
-      const response = await fetch(url, {
-        headers: {
-          'Authorization': `Bearer ${token.value}`,
-          'Content-Type': 'application/json',
-        },
-      })
+      const query = `?${params.toString()}`;
 
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`)
-      }
+      // GET dengan api.get
+      const result = await api.get<RecentSale[]>(
+        `/analytics/recent-sales${query}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token.value}`,
+          },
+        }
+      );
 
-      const data: RecentSale[] = await response.json()
-      return data
+      return result;
     } catch (err: any) {
-      error.value = err?.message || 'Gagal memuat recent sales'
-      console.error('[Analytics] getRecentSales error:', err)
-      return []
+      error.value = err?.message || "Gagal memuat recent sales";
+      console.error("[Analytics] getRecentSales error:", err);
+      return [];
     } finally {
-      isLoading.value = false
+      isLoading.value = false;
     }
   }
 
@@ -170,52 +170,54 @@ export function useAnalytics() {
    */
   async function getDailySales(days: number = 7): Promise<DailySales[]> {
     try {
-      const sales = await getRecentSales(100) // Get lebih banyak untuk aggregate
-      
+      const sales = await getRecentSales(100); // Get lebih banyak untuk aggregate
+
       // Group by date
-      const dailyMap = new Map<string, { total: number; count: number }>()
-      
-      sales.forEach(sale => {
-        const date = new Date(sale.createdAt).toISOString().split('T')[0]
-        const existing = dailyMap.get(date) || { total: 0, count: 0 }
+      const dailyMap = new Map<string, { total: number; count: number }>();
+
+      sales.forEach((sale) => {
+        const date = new Date(sale.createdAt).toISOString().split("T")[0];
+        const existing = dailyMap.get(date) || { total: 0, count: 0 };
         dailyMap.set(date, {
           total: existing.total + sale.totalAmount,
-          count: existing.count + 1
-        })
-      })
+          count: existing.count + 1,
+        });
+      });
 
       // Convert to array and sort
       const dailySales: DailySales[] = Array.from(dailyMap.entries())
         .map(([date, data]) => ({
           date,
           total_sales: data.total,
-          transaction_count: data.count
+          transaction_count: data.count,
         }))
         .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-        .slice(-days) // Take last N days
+        .slice(-days); // Take last N days
 
       // Fill missing days
-      const result: DailySales[] = []
-      const today = new Date()
-      
+      const result: DailySales[] = [];
+      const today = new Date();
+
       for (let i = days - 1; i >= 0; i--) {
-        const targetDate = new Date(today)
-        targetDate.setDate(today.getDate() - i)
-        const dateStr = targetDate.toISOString().split('T')[0]
-        
-        const found = dailySales.find(d => d.date === dateStr)
-        result.push(found || {
-          date: dateStr,
-          total_sales: 0,
-          transaction_count: 0
-        })
+        const targetDate = new Date(today);
+        targetDate.setDate(today.getDate() - i);
+        const dateStr = targetDate.toISOString().split("T")[0];
+
+        const found = dailySales.find((d) => d.date === dateStr);
+        result.push(
+          found || {
+            date: dateStr,
+            total_sales: 0,
+            transaction_count: 0,
+          }
+        );
       }
 
-      return result
+      return result;
     } catch (err: any) {
-      error.value = err?.message || 'Gagal memuat daily sales'
-      console.error('[Analytics] getDailySales error:', err)
-      return []
+      error.value = err?.message || "Gagal memuat daily sales";
+      console.error("[Analytics] getDailySales error:", err);
+      return [];
     }
   }
 
@@ -224,8 +226,8 @@ export function useAnalytics() {
     error,
     getSalesSummary,
     getTopItems,
+    salesSummary,
     getRecentSales,
     getDailySales,
-  }
+  };
 }
-

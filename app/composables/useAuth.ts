@@ -63,6 +63,7 @@ export const useAuth = () => {
       );
 
       user.value = response.user;
+      
 
       // Store token di cookie
       const token = useCookie("auth_token", {
@@ -71,6 +72,7 @@ export const useAuth = () => {
       });
       token.value = response.token;
       user.value = response.user;
+
       return {
         success: true,
         status: 200, // HTTP OK
