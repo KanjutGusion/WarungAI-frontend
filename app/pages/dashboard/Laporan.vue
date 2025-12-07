@@ -39,7 +39,7 @@
                 Laporan Keuangan
               </h1>
               <p class="text-gray-600 dark:text-gray-400 mt-1 text-sm">
-                Catat pemasukan dan pengeluaran secara otomatis dari hasil OCR
+                Menampilkan pemasukan dan pengeluaran secara otomatis dari hasil OCR
                 nota
               </p>
             </div>
@@ -70,7 +70,7 @@
           class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl p-6 space-y-4 shadow-sm dark:shadow-none"
         >
           <h2 class="text-lg font-semibold text-slate-900 dark:text-white">
-            Ringkasan Minggu Ini
+            Ringkasan Total
           </h2>
 
           <!-- LOADING  -->
@@ -136,7 +136,7 @@
 
           <p class="text-gray-600 dark:text-slate-400 text-sm leading-relaxed">
             Laporan ini menampilkan total keseluruhan,data ini akan otomatis
-            diperbarui setiap bulan.
+            diperbarui setiap anda mengupload nota transaksi.
           </p>
         </section>
 

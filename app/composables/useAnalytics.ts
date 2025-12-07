@@ -89,6 +89,64 @@ export function useAnalytics() {
     }
   }
 
+  /**
+   * Export Sales To PDF
+   * GET /analytics/export/pdf
+   */
+  async function exportPdf(startDate?: string, endDate?: string) {
+    try {
+      isLoading.value = true;
+      error.value = null;
+      const baseURL = `${config.public.apiBase}/api/${config.public.apiVersion}`;
+      const token = useCookie("auth_token");
+
+      // Build query params
+      const params = new URLSearchParams();
+      if (startDate) params.append("startDate", startDate);
+      if (endDate) params.append("endDate", endDate);
+      params.append("exportAll", "true");
+
+      const query = params.toString() ? `?${params.toString()}` : "";
+
+      // Fetch PDF file
+      const res = await fetch(`${baseURL}/analytics/export/pdf${query}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token.value}`,
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error(`Gagal export PDF: ${res.status}`);
+      }
+
+      // Ambil Blob (PDF)
+      const pdfBlob = await res.blob();
+
+      // Download otomatis
+      const url = URL.createObjectURL(pdfBlob);
+      const link = document.createElement("a");
+
+      const fileName = `sales-report-${
+        new Date().toISOString().split("T")[0]
+      }.pdf`;
+
+      link.href = url;
+      link.download = fileName;
+      link.click();
+
+      URL.revokeObjectURL(url);
+
+      return true;
+    } catch (err: any) {
+      error.value = err.message || "Gagal export PDF";
+      console.error("[Analytics] exportPdf error:", err);
+      return null;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+  
   
 
   /**
@@ -229,6 +287,7 @@ export function useAnalytics() {
     getSalesSummary,
     getTopItems,
     salesSummary,
+    exportPdf,
     getRecentSales,
     getDailySales,
   };
