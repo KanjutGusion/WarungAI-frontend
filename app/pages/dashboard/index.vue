@@ -102,22 +102,21 @@
   </div>
 </template>
 <script setup lang="ts">
+// Components
 import StatCard from "~/components/layout/StatCard.vue";
 import DashboardSidebar from "~/components/layout/Sidebar.vue";
 import OcrUploadPanel from "~/pages/dashboard/UploadOcr.vue";
-import { useDashboardOverview } from "~/composables/useDashboard";
-import { useAuth } from "@/composables/useAuth";
-import { useAnalytics } from "@/composables/useAnalytics";
 
+// Types
+import type { Stat } from "~/composables/useDashboard";
+
+// Composables
 const { user } = useAuth();
 const { isDark, toggleTheme } = useTheme();
+const { ocrRows, todayLabel, formatRupiah, updateOcrData } = useDashboardOverview();
+const { getSalesSummary, exportPdf } = useAnalytics();
 
-
-const { ocrRows, todayLabel, formatRupiah, updateOcrData } =
-  useDashboardOverview();
-
-const { getSalesSummary,exportPdf } = useAnalytics();
-
+// State
 const stats = ref<Stat[]>([
   { icon: "💰", value: "Rp 0", label: "Pendapatan Total" },
   { icon: "🛒", value: "0", label: "Total Transaksi" },

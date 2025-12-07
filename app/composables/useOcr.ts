@@ -1,5 +1,3 @@
-import { ref, computed } from "vue";
-
 export type OcrRow = {
   id: number;
   name: string;

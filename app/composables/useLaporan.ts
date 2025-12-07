@@ -2,7 +2,6 @@
  * Composable untuk Laporan Keuangan
  * Fetch data dari Analytics API
  */
-import { ref, computed } from 'vue'
 
 interface OmzetPoint {
   label: string

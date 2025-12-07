@@ -147,21 +147,16 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref, computed } from "vue";
-import DashboardSidebar from "@/components/layout/Sidebar.vue";
-import LineChart from "@/components/charts/LineChart.vue";
-import { useFinanceReport } from "~/composables/useLaporan";
-import { useAnalytics } from "~/composables/useAnalytics";
+// Components (auto-imported by Nuxt, explicit for clarity)
+import DashboardSidebar from "~/components/layout/Sidebar.vue";
+import LineChart from "~/components/charts/LineChart.vue";
 
+// Composables
 const { isDark, toggleTheme } = useTheme();
-
-// Legacy finance report (untuk summary data)
-const { isLoading, error, summary, formatRupiah, loadReport } =
-  useFinanceReport();
-console.log(summary.value);
-
-// Analytics API untuk chart
+const { isLoading, error, summary, formatRupiah, loadReport } = useFinanceReport();
 const analytics = useAnalytics();
+
+// Chart state
 const isLoadingChart = ref(false);
 const dailySales = ref<
   Array<{ date: string; total_sales: number; transaction_count: number }>

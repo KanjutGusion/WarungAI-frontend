@@ -1,37 +1,26 @@
-//dummy
-import { ref, computed } from "vue";
+/**
+ * Composable untuk Dashboard Overview
+ */
+import type { OcrRow } from "~/composables/useOcr";
 
-export type Stat = {
+// Types
+export interface Stat {
   icon: string;
   value: string;
   label: string;
-};
+}
+
+// Re-export OcrRow for convenience
+export type { OcrRow } from "~/composables/useOcr";
 
 export function useDashboardOverview() {
-  const api = useApi();
-
-   
+  // State
   const ocrRows = ref<OcrRow[]>([]);
 
+  // Computed
   const omzetToday = computed(() =>
     ocrRows.value.reduce((sum, row) => sum + row.total, 0)
   );
-
-  const formatRupiah = (amount: number) =>
-    new Intl.NumberFormat("id-ID", {
-      style: "currency",
-      currency: "IDR",
-      minimumFractionDigits: 0,
-    }).format(amount || 0);
-
-//   const computedStats = computed<Stat[]>(() =>
-//     stats.value.map((stat) => {
-//       if (stat.label === "Pendapatan Total") {
-//         return { ...stat, value: formatRupiah(omzetToday.value) };
-//       }
-//       return stat;
-//     })
-//   );
 
   const todayLabel = computed(() =>
     new Intl.DateTimeFormat("id-ID", {
@@ -42,13 +31,21 @@ export function useDashboardOverview() {
     }).format(new Date())
   );
 
+  // Methods
+  const formatRupiah = (amount: number) =>
+    new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      minimumFractionDigits: 0,
+    }).format(amount || 0);
+
   const updateOcrData = (parsedData: OcrRow[]) => {
     ocrRows.value = parsedData;
   };
 
   return {
     ocrRows,
-    // computedStats,
+    omzetToday,
     todayLabel,
     formatRupiah,
     updateOcrData,

@@ -2,7 +2,6 @@
  * Composable untuk Analytics API
  * Endpoint: /analytics dari backend
  */
-import { ref } from "vue";
 
 // Types berdasarkan backend DTO
 export interface SalesSummary {

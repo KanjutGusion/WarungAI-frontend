@@ -18,7 +18,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   }
 
   if (!token.value) {
-    console.log("belum login");
     return navigateTo("/auth/login");
   }
   
